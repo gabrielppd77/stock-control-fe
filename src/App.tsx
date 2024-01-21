@@ -1,16 +1,12 @@
 import { Sidebar } from "./components/Sidebar";
+import { Home } from "./pages/Home";
 
 export default function App() {
   return (
-    <div className="grid-cols-app grid min-h-screen">
+    <div className="grid min-h-screen grid-cols-app">
       <Sidebar />
       <main className="px-4 pb-12 pt-8">
-        <h1 className="bg-primary text-3xl font-bold underline">
-          Hello world!
-        </h1>
-        <button className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">
-          ...
-        </button>
+        <Home />
       </main>
     </div>
   );
