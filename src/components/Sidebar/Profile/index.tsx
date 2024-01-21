@@ -1,13 +1,11 @@
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 
 export function Profile() {
   return (
     <div className="flex items-center gap-3">
-      <img
-        src="vite.svg"
-        className="h-10 w-10 rounded-full bg-zinc-500"
-        alt="profile-img"
-      />
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-violet-50">
+        <User className="h-10 w-10 text-violet-500" />
+      </div>
       <div className="flex flex-col">
         <span className="text-sm font-semibold text-zinc-700">
           Gabriel Domingos
