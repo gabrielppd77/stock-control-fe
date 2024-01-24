@@ -1,7 +1,7 @@
 import { Mail } from "lucide-react";
 
 import { SettingsTabs } from "@components/SettingsTabs";
-import Input from "@components/Input";
+// import Input from "@components/TextField";
 import { FileInput } from "@components/Form/FileInput";
 
 export function Home() {
