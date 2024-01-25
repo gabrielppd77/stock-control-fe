@@ -24,6 +24,7 @@
       "@*": ["./src/*"],
       "@pages/*": ["./src/pages/*"],
       "@components/*": ["./src/components/*"],
+      "@lib/utils/*": ["./src/lib/utils/*"],
     },
   },
   "include": ["src"],

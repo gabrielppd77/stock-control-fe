@@ -1,13 +1,14 @@
 import { Sidebar } from "@components/Sidebar";
-// import { Home } from "@pages/Home";
+
+import { Home } from "@pages/Home";
 
 export default function App() {
   return (
-    <div className="grid-cols-app grid min-h-screen">
+    <div className="bg-background grid min-h-screen grid-cols-app">
       <Sidebar />
-      {/* <main className="px-8 pb-12 pt-8">
+      <main className="p-8">
         <Home />
-      </main> */}
+      </main>
     </div>
   );
 }
