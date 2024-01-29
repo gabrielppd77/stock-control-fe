@@ -1,8 +1,8 @@
-import { BarChart, Home, SquareStack } from "lucide-react";
-
 import { Logo } from "./Logo";
 import { NavItem } from "./NavItem";
 import { Separator } from "@components/ui/separator";
+
+import { routes } from "@routes/routes";
 
 export function Sidebar() {
   return (
@@ -12,9 +12,9 @@ export function Sidebar() {
       <Separator />
 
       <nav className="space-y-0.5">
-        <NavItem title="Home" icon={Home} />
-        <NavItem title="Fornecedores" icon={BarChart} />
-        <NavItem title="Categorias" icon={SquareStack} />
+        {routes.map((d) => (
+          <NavItem key={d.title} title={d.title} path={d.path} icon={d.icon} />
+        ))}
       </nav>
     </aside>
   );
