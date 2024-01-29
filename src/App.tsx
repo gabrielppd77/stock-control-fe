@@ -1,6 +1,5 @@
 import { Sidebar } from "@components/Sidebar";
-
-import { Home } from "@pages/Home";
+import { RouterProvider } from "@providers/RouterProvider";
 
 import { ThemeProvider } from "@providers/ThemeProvider";
 
@@ -10,7 +9,7 @@ export default function App() {
       <div className="grid min-h-screen grid-cols-app bg-background">
         <Sidebar />
         <main className="p-8">
-          <Home />
+          <RouterProvider />
         </main>
       </div>
     </ThemeProvider>
