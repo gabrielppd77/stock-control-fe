@@ -1,3 +1,9 @@
+import { PageHeader } from "@components/PageHeader";
+
 export function Category() {
-  return <>category</>;
+  return (
+    <div>
+      <PageHeader title="Categorias" />
+    </div>
+  );
 }

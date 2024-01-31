@@ -1,3 +1,9 @@
+import { PageHeader } from "@components/PageHeader";
+
 export function Supplier() {
-  return <>supplier</>;
+  return (
+    <div>
+      <PageHeader title="Fornecedores" />
+    </div>
+  );
 }
