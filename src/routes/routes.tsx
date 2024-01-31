@@ -1,22 +1,26 @@
 import { ElementType, ReactNode } from "react";
 
+import { Home as HomeIcon, BarChart, SquareStack } from "lucide-react";
+
+import { RouteObject } from "react-router-dom";
+
+import { MainLayout } from "@layouts/Main";
+
 import { Home } from "@pages/Home";
 import { Supplier } from "@pages/Supplier";
 import { Category } from "@pages/Category";
 
-import { Home as HomeIcon, BarChart, SquareStack } from "lucide-react";
-
-interface RouteObject {
+interface RouteMenu {
   title: string;
   path: string;
   element: ReactNode;
   icon: ElementType;
 }
 
-export const routes: RouteObject[] = [
+export const routesMenu: RouteMenu[] = [
   {
     title: "Início",
-    path: "/home",
+    path: "/",
     element: <Home />,
     icon: HomeIcon,
   },
@@ -31,5 +35,13 @@ export const routes: RouteObject[] = [
     path: "/category",
     element: <Category />,
     icon: SquareStack,
+  },
+];
+
+export const routes: RouteObject[] = [
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: routesMenu,
   },
 ];
