@@ -1,10 +1,13 @@
-import { RouterProvider } from "@providers/RouterProvider";
 import { ThemeProvider } from "@providers/ThemeProvider";
+import { QueryClientProvider } from "@providers/QueryClientProvider";
+import { RouterProvider } from "@providers/RouterProvider";
 
 export default function App() {
   return (
     <ThemeProvider>
-      <RouterProvider />
+      <QueryClientProvider>
+        <RouterProvider />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
