@@ -2,7 +2,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -27,22 +26,24 @@ import { Button } from "@components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isFetching?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isFetching,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
-    <div>
-      <div className="rounded-md border">
+    <div className="flex h-full flex-col">
+      <div className="flex-1 rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

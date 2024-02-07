@@ -2,6 +2,7 @@ import {
   QueryClient,
   QueryClientProvider as QueryClientProviderLib,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 interface QueryClientProviderProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export function QueryClientProvider(props: QueryClientProviderProps) {
   return (
     <QueryClientProviderLib client={queryClient}>
       {children}
+      <ReactQueryDevtools />
     </QueryClientProviderLib>
   );
 }
