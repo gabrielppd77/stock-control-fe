@@ -1,4 +1,4 @@
-import { ReactNode, ElementType } from "react";
+import React, { ReactNode, ElementType } from "react";
 
 import {
   Button as ButtonUI,
@@ -10,16 +10,26 @@ interface ButtonProps extends ButtonPropsUI {
   children: ReactNode;
   icon?: ElementType;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
-export function Button(props: ButtonProps) {
-  const { children, icon: Icon, isLoading, ...rest } = props;
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (props: ButtonProps, ref) => {
+    const { children, icon: Icon, isLoading, disabled, ...rest } = props;
 
-  return (
-    <ButtonUI {...rest}>
-      {Icon && <Icon className="mr-2 h-4 w-4" />}
-      <div className={isLoading ? "text-transparent" : ""}>{children}</div>
-      {isLoading && <LoadingSpinner className="absolute" />}
-    </ButtonUI>
-  );
-}
+    return (
+      <ButtonUI
+        className={isLoading ? "group" : ""}
+        ref={ref}
+        disabled={disabled || isLoading}
+        {...rest}
+      >
+        {Icon && <Icon className="mr-2 h-4 w-4 group-[]:opacity-0" />}
+        <div className="group-[]:opacity-0">{children}</div>
+        <LoadingSpinner className="absolute opacity-0 group-[]:opacity-100" />
+      </ButtonUI>
+    );
+  },
+);
+
+export { Button };
