@@ -22,27 +22,31 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination";
 import { Button } from "@components/ui/button";
+import { LoadingSpinner } from "@components/LoadingSpinner";
+import { LinearProgress } from "@components/LinearProgress";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading?: boolean;
   isFetching?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
   isFetching,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
     <div className="flex h-full flex-col">
+      <div className="h-1.5 w-full">{isFetching && <LinearProgress />}</div>
       <div className="flex-1 rounded-md border">
         <Table>
           <TableHeader>
@@ -64,7 +68,15 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24">
+                  <div className="flex w-full justify-center">
+                    <LoadingSpinner className="h-10 w-10" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -86,7 +98,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Sem resultados.
                 </TableCell>
               </TableRow>
             )}

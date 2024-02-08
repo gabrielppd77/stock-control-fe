@@ -22,12 +22,9 @@ export function Table() {
   return (
     <DataTable
       data={_d?.data || []}
+      isLoading={isLoading}
       isFetching={isFetching}
       columns={[
-        {
-          header: "Id",
-          accessorKey: "id",
-        },
         {
           header: "Nome",
           accessorKey: "name",
