@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 import { LoadingSpinner } from "@components/LoadingSpinner";
 import { LinearProgress } from "@components/LinearProgress";
@@ -31,6 +31,7 @@ import {
   PaginationOptions,
 } from "@entities/common/PaginationResponse";
 import { PaginationParams } from "@entities/common/PaginationParams";
+import { cn } from "@lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -109,12 +110,16 @@ export function DataTable<TData, TValue>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                      {paginationParams.sort === header.id &&
-                        (paginationParams.order === "asc" ? (
-                          <ArrowDownWideNarrow />
-                        ) : (
-                          <ArrowUpWideNarrow />
-                        ))}
+                      {paginationParams.sort === header.id && (
+                        <ArrowDown
+                          className={cn(
+                            "h-5 w-5 transition-transform",
+                            paginationParams.order === "asc"
+                              ? "rotate-0"
+                              : "rotate-180",
+                          )}
+                        />
+                      )}
                     </TableHead>
                   );
                 })}
@@ -166,6 +171,8 @@ export function DataTable<TData, TValue>({
         lastPage={pagination.lastPage}
         onChange={(page) => setPaginationParams((prev) => ({ ...prev, page }))}
       />
+
+      <div>Seleção de itens visiveis</div>
     </div>
   );
 }
