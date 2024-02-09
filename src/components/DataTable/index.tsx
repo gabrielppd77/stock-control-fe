@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   ColumnDef,
   flexRender,
@@ -14,30 +16,58 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from "@/components/ui/pagination";
-import { Button } from "@components/ui/button";
+import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+
 import { LoadingSpinner } from "@components/LoadingSpinner";
 import { LinearProgress } from "@components/LinearProgress";
 
+import { Pagination } from "./Pagination";
+import { SearchField } from "./SearchField";
+
+import { useQuery } from "@tanstack/react-query";
+
+import {
+  PaginationResponse,
+  PaginationOptions,
+} from "@entities/common/PaginationResponse";
+import { PaginationParams } from "@entities/common/PaginationParams";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  isLoading?: boolean;
-  isFetching?: boolean;
+  queryKey: string[];
+  queryFn: (params: PaginationParams) => Promise<PaginationResponse<TData[]>>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
-  isLoading,
-  isFetching,
+  queryKey,
+  queryFn,
 }: DataTableProps<TData, TValue>) {
+  const [paginationParams, setPaginationParams] = useState<PaginationParams>({
+    page: 0,
+    size: 10,
+  });
+
+  const {
+    data: _d,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: [...queryKey, paginationParams],
+    queryFn: () => queryFn(paginationParams),
+  });
+
+  const data = _d?.data || ([] as TData[]);
+
+  const pagination =
+    _d?.pagination ||
+    ({
+      lastPage: 0,
+      length: 0,
+      page: 0,
+      size: 0,
+    } as PaginationOptions);
+
   const table = useReactTable({
     data,
     columns,
@@ -45,22 +75,46 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex h-full flex-col">
+    <div>
+      <SearchField
+        onChange={(value) =>
+          setPaginationParams((prev) => ({
+            ...prev,
+            search: value,
+          }))
+        }
+      />
       <div className="h-1.5 w-full">{isFetching && <LinearProgress />}</div>
-      <div className="flex-1 rounded-md border">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      onClick={() =>
+                        setPaginationParams((prev) => ({
+                          ...prev,
+                          sort: header.id,
+                          order: prev.order === "asc" ? "desc" : "asc",
+                        }))
+                      }
+                      className="flex items-center justify-between hover:cursor-pointer"
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+                      {paginationParams.sort === header.id &&
+                        (paginationParams.order === "asc" ? (
+                          <ArrowDownWideNarrow />
+                        ) : (
+                          <ArrowUpWideNarrow />
+                        ))}
                     </TableHead>
                   );
                 })}
@@ -70,9 +124,9 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24">
+                <TableCell colSpan={columns.length}>
                   <div className="flex w-full justify-center">
-                    <LoadingSpinner className="h-10 w-10" />
+                    <LoadingSpinner />
                   </div>
                 </TableCell>
               </TableRow>
@@ -98,53 +152,20 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Sem resultados.
+                  Sem resultados
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+
+      <Pagination
+        page={paginationParams.page}
+        visibles={5}
+        lastPage={pagination.lastPage}
+        onChange={(page) => setPaginationParams((prev) => ({ ...prev, page }))}
+      />
     </div>
   );
 }

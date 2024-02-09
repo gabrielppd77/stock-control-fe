@@ -1,4 +1,4 @@
-interface PageOptionsResponse {
+export interface PaginationOptions {
   length: number;
   size: number;
   lastPage: number;
@@ -7,5 +7,5 @@ interface PageOptionsResponse {
 
 export interface PaginationResponse<DataType> {
   data: DataType;
-  pagination: PageOptionsResponse;
+  pagination: PaginationOptions;
 }

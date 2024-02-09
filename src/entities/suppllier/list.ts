@@ -6,7 +6,7 @@ import { PaginationResponse } from "@entities/common/PaginationResponse";
 import { SupplierPresenter } from ".";
 
 interface RequestProps {
-  params: PaginationParams<SupplierPresenter>;
+  params: PaginationParams;
 }
 
 export async function list(props: RequestProps) {
