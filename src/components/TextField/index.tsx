@@ -8,10 +8,21 @@ interface TextFieldProps {
   type?: React.HTMLInputTypeAttribute;
   value?: string;
   onChange: (value: string) => void;
+  renderLeft?: React.ReactNode;
+  renderRight?: React.ReactNode;
 }
 
 export function TextField(props: TextFieldProps) {
-  const { label, name, placeholder, type, value, onChange } = props;
+  const {
+    label,
+    name,
+    placeholder,
+    type,
+    value,
+    onChange,
+    renderLeft,
+    renderRight,
+  } = props;
   return (
     <div className="grid w-full items-center gap-1.5">
       <Label htmlFor={name}>{label}</Label>
@@ -21,6 +32,8 @@ export function TextField(props: TextFieldProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        renderLeft={renderLeft}
+        renderRight={renderRight}
       />
     </div>
   );

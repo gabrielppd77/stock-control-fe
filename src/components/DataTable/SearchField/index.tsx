@@ -10,6 +10,9 @@ import {
   SelectValue,
 } from "@components/ui/select";
 
+import { Search, X } from "lucide-react";
+import { Button } from "@components/Button";
+
 interface SearchFieldProps {
   onChange: (value?: string) => void;
 }
@@ -28,9 +31,20 @@ export function SearchField(props: SearchFieldProps) {
   return (
     <div>
       <TextField
-        placeholder="Faça a sua busca..."
+        placeholder="Faça a sua pesquisa..."
         value={query}
         onChange={setQuery}
+        renderLeft={<Search />}
+        renderRight={
+          <Button
+            size="sm"
+            variant="ghost"
+            className="rounded-full"
+            onClick={() => setQuery("")}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        }
       />
       <Select>
         <SelectTrigger className="w-[180px]">
