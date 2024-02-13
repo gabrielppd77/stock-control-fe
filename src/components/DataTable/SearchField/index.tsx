@@ -1,35 +1,43 @@
 import { useEffect, useState } from "react";
 
-import { TextField } from "@components/TextField";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@components/ui/select";
-
 import { Search, X } from "lucide-react";
-import { Button } from "@components/Button";
 
-interface SearchFieldProps {
-  onChange: (value?: string) => void;
+import { TextField } from "@components/TextField";
+import { Button } from "@components/Button";
+import { SelectField } from "@components/SelectField";
+
+import { useTableStore } from "../TableStore";
+
+export interface SearchOption<TData> {
+  label: string;
+  value: keyof TData extends string ? keyof TData : never;
+}
+interface SearchFieldProps<TData> {
+  searchOptions: SearchOption<TData>[];
 }
 
-export function SearchField(props: SearchFieldProps) {
-  const { onChange } = props;
+export function SearchField<TData>(props: SearchFieldProps<TData>) {
+  const { searchOptions } = props;
+
+  const { paginationParams, paginationsChange } = useTableStore();
+  const { field } = paginationParams;
+  const { changeSearch, changeField } = paginationsChange;
 
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => onChange(query || undefined), 500);
+    const timeoutId = setTimeout(() => changeSearch(query), 500);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
+  useEffect(() => {
+    changeField(searchOptions[0].value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchOptions]);
+
   return (
-    <div>
+    <div className="flex gap-2">
       <TextField
         placeholder="Faça a sua pesquisa..."
         value={query}
@@ -46,16 +54,12 @@ export function SearchField(props: SearchFieldProps) {
           </Button>
         }
       />
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
-        </SelectContent>
-      </Select>
+      <SelectField
+        options={searchOptions}
+        placeholder="Escolha uma coluna para pesquisar"
+        value={field}
+        onValueChange={(value) => changeField(value)}
+      />
     </div>
   );
 }

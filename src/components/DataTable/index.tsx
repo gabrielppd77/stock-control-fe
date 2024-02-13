@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import {
   ColumnDef,
@@ -20,34 +20,36 @@ import { ArrowDown } from "lucide-react";
 
 import { LoadingSpinner } from "@components/LoadingSpinner";
 import { LinearProgress } from "@components/LinearProgress";
+import { SelectField } from "@components/SelectField";
 
 import { Pagination } from "./Pagination";
-import { SearchField } from "./SearchField";
+import { SearchField, SearchOption } from "./SearchField";
 
 import { useQuery } from "@tanstack/react-query";
 
-import {
-  PaginationResponse,
-  PaginationOptions,
-} from "@entities/common/PaginationResponse";
+import { PaginationResponse } from "@entities/common/PaginationResponse";
 import { PaginationParams } from "@entities/common/PaginationParams";
 import { cn } from "@lib/utils";
+
+import { useTableStore } from "./TableStore";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   queryKey: string[];
   queryFn: (params: PaginationParams) => Promise<PaginationResponse<TData[]>>;
+  searchOptions: SearchOption<TData>[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   queryKey,
   queryFn,
+  searchOptions,
 }: DataTableProps<TData, TValue>) {
-  const [paginationParams, setPaginationParams] = useState<PaginationParams>({
-    page: 0,
-    size: 10,
-  });
+  const { paginationParams, paginationsChange, changePaginationResponse } =
+    useTableStore();
+  const { order, sort, size } = paginationParams;
+  const { changeSortHeader, changeSize } = paginationsChange;
 
   const {
     data: _d,
@@ -58,33 +60,22 @@ export function DataTable<TData, TValue>({
     queryFn: () => queryFn(paginationParams),
   });
 
-  const data = _d?.data || ([] as TData[]);
-
-  const pagination =
-    _d?.pagination ||
-    ({
-      lastPage: 0,
-      length: 0,
-      page: 0,
-      size: 0,
-    } as PaginationOptions);
+  useEffect(() => {
+    if (_d?.pagination) {
+      changePaginationResponse(_d?.pagination);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_d?.pagination]);
 
   const table = useReactTable({
-    data,
+    data: _d?.data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <div>
-      <SearchField
-        onChange={(value) =>
-          setPaginationParams((prev) => ({
-            ...prev,
-            search: value,
-          }))
-        }
-      />
+      <SearchField searchOptions={searchOptions} />
       <div className="h-1.5 w-full">{isFetching && <LinearProgress />}</div>
       <div className="rounded-md border">
         <Table>
@@ -95,11 +86,10 @@ export function DataTable<TData, TValue>({
                   return (
                     <TableHead
                       onClick={() =>
-                        setPaginationParams((prev) => ({
-                          ...prev,
-                          sort: header.id,
-                          order: prev.order === "asc" ? "desc" : "asc",
-                        }))
+                        changeSortHeader(
+                          header.id,
+                          order === "desc" ? "asc" : "desc",
+                        )
                       }
                       className="flex items-center justify-between hover:cursor-pointer"
                       key={header.id}
@@ -110,13 +100,11 @@ export function DataTable<TData, TValue>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                      {paginationParams.sort === header.id && (
+                      {sort === header.id && (
                         <ArrowDown
                           className={cn(
                             "h-5 w-5 transition-transform",
-                            paginationParams.order === "asc"
-                              ? "rotate-0"
-                              : "rotate-180",
+                            order === "asc" ? "rotate-0" : "rotate-180",
                           )}
                         />
                       )}
@@ -165,14 +153,32 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <Pagination
-        page={paginationParams.page}
-        visibles={5}
-        lastPage={pagination.lastPage}
-        onChange={(page) => setPaginationParams((prev) => ({ ...prev, page }))}
-      />
-
-      <div>Seleção de itens visiveis</div>
+      <div className="flex items-center justify-center">
+        <div className="-mr-20 flex-1 justify-center">
+          <Pagination />
+        </div>
+        <div className="h-full w-20">
+          <SelectField
+            placeholder=""
+            value={size.toString()}
+            onValueChange={(value) => changeSize(parseInt(value))}
+            options={[
+              {
+                label: "10",
+                value: "10",
+              },
+              {
+                label: "15",
+                value: "15",
+              },
+              {
+                label: "20",
+                value: "20",
+              },
+            ]}
+          />
+        </div>
+      </div>
     </div>
   );
 }

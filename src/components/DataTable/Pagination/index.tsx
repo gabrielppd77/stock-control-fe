@@ -5,6 +5,8 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 
+import { useTableStore } from "../TableStore";
+
 import { PaginationButton } from "./PaginationButton";
 
 function generatePagination(
@@ -29,17 +31,12 @@ function generatePagination(
   return paginationArray;
 }
 
-interface PaginationProps {
-  page: number;
-  visibles: number;
-  lastPage: number;
-  onChange: (page: number) => void;
-}
+export function Pagination() {
+  const { paginationResponse, paginationsChange } = useTableStore();
+  const { page, lastPage } = paginationResponse;
+  const { changePage } = paginationsChange;
 
-export function Pagination(props: PaginationProps) {
-  const { page, visibles, lastPage, onChange } = props;
-
-  const pages = generatePagination(page, lastPage - 1, visibles);
+  const pages = generatePagination(page, lastPage - 1, 5);
 
   const showEllipsis = pages.length > 0;
 
@@ -51,12 +48,15 @@ export function Pagination(props: PaginationProps) {
         <PaginationContent>
           <PaginationButton
             disabled={page <= 0}
-            onClick={() => onChange(page - 1)}
+            onClick={() => changePage(page - 1)}
           >
             Anterior
           </PaginationButton>
 
-          <PaginationButton onClick={() => onChange(0)} isSelected={page == 0}>
+          <PaginationButton
+            onClick={() => changePage(0)}
+            isSelected={page == 0}
+          >
             1
           </PaginationButton>
 
@@ -70,7 +70,7 @@ export function Pagination(props: PaginationProps) {
             <PaginationButton
               key={index}
               isSelected={index === page}
-              onClick={() => onChange(index)}
+              onClick={() => changePage(index)}
             >
               {index + 1}
             </PaginationButton>
@@ -84,7 +84,7 @@ export function Pagination(props: PaginationProps) {
 
           {showButtonLastPage && (
             <PaginationButton
-              onClick={() => onChange(lastPage)}
+              onClick={() => changePage(lastPage)}
               isSelected={page == lastPage}
             >
               {lastPage + 1}
@@ -93,7 +93,7 @@ export function Pagination(props: PaginationProps) {
 
           <PaginationButton
             disabled={page >= lastPage}
-            onClick={() => onChange(page + 1)}
+            onClick={() => changePage(page + 1)}
           >
             Próximo
           </PaginationButton>

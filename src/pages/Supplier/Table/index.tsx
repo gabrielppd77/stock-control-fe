@@ -13,6 +13,12 @@ export function Table() {
       ]}
       queryKey={["supplier"]}
       queryFn={async (params) => await list({ params })}
+      searchOptions={[
+        {
+          label: "Nome",
+          value: "name",
+        },
+      ]}
     />
   );
 }
