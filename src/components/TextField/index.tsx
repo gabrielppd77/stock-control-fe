@@ -6,7 +6,7 @@ interface TextFieldProps {
   name?: string;
   placeholder?: string;
   type?: React.HTMLInputTypeAttribute;
-  value?: string;
+  value: string;
   onChange: (value: string) => void;
   renderLeft?: React.ReactNode;
   renderRight?: React.ReactNode;

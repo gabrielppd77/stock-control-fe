@@ -1,9 +1,10 @@
 import { PageHeader } from "@components/PageHeader";
-import { ActionDialog } from "@components/ActionDialog";
+import { TriggerDialog } from "@components/TriggerDialog";
 import { Button } from "@components/Button";
 
 import { PlusCircle } from "lucide-react";
 
+import { Form } from "./Form";
 import { Table } from "./Table";
 
 export function Supplier() {
@@ -12,17 +13,12 @@ export function Supplier() {
       <PageHeader
         title="Fornecedores"
         renderRight={
-          <ActionDialog
+          <TriggerDialog
             title="Cadastro de Fornecedor"
-            onSubmit={async () => undefined}
-            trigger={
-              <Button icon={PlusCircle} onClick={() => undefined}>
-                Adicionar
-              </Button>
-            }
+            trigger={<Button icon={PlusCircle}>Adicionar</Button>}
           >
-            content
-          </ActionDialog>
+            {(close) => <Form close={close} data={null} />}
+          </TriggerDialog>
         }
       />
 

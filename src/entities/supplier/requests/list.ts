@@ -2,8 +2,7 @@ import { api } from "@lib/api";
 
 import { PaginationParams } from "@entities/common/PaginationParams";
 import { PaginationResponse } from "@entities/common/PaginationResponse";
-
-import { SupplierPresenter } from ".";
+import { SupplierPresenter } from "../dtos/SupplierPresenter";
 
 interface RequestProps {
   params: PaginationParams;
