@@ -20,13 +20,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <ButtonUI
         className={isLoading ? "group" : ""}
-        ref={ref}
         disabled={disabled || isLoading}
+        ref={ref}
         {...rest}
       >
         {Icon && <Icon className="mr-2 h-4 w-4 group-[]:opacity-0" />}
         <div className="group-[]:opacity-0">{children}</div>
-        <LoadingSpinner className="absolute opacity-0 group-[]:opacity-100" />
+        {isLoading && <LoadingSpinner className="absolute" />}
       </ButtonUI>
     );
   },
