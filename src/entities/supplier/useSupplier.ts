@@ -6,7 +6,7 @@ import { list } from "./requests/list";
 import { create } from "./requests/create";
 import { update } from "./requests/update";
 
-const query = ["supplier"];
+const query = ["suppliers"];
 
 export function useSupplierQuery(props: PaginationParams) {
   const { data, isLoading, isFetching } = useQuery({
