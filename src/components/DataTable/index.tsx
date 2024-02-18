@@ -67,31 +67,49 @@ export function DataTable<TData, TValue>({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
+                    const enableSorting =
+                      typeof header.column.columnDef.enableSorting ===
+                      "undefined"
+                        ? true
+                        : header.column.columnDef.enableSorting;
                     return (
                       <TableHead
-                        onClick={() =>
+                        onClick={() => {
+                          if (!enableSorting) return;
                           changeSort(
                             header.id,
                             order === "desc" ? "asc" : "desc",
-                          )
-                        }
-                        className="flex items-center justify-between hover:cursor-pointer"
+                          );
+                        }}
                         key={header.id}
+                        style={{
+                          width:
+                            header.getSize() !== 150
+                              ? header.getSize()
+                              : undefined,
+                        }}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                        {sort === header.id && (
-                          <ArrowDown
-                            className={cn(
-                              "h-5 w-5 transition-transform",
-                              order === "asc" ? "rotate-0" : "rotate-180",
-                            )}
-                          />
-                        )}
+                        <div
+                          className={cn({
+                            ["flex items-center justify-between hover:cursor-pointer"]:
+                              enableSorting,
+                          })}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                          {sort === header.id && (
+                            <ArrowDown
+                              className={cn(
+                                "h-5 w-5 transition-transform",
+                                order === "asc" ? "rotate-0" : "rotate-180",
+                              )}
+                            />
+                          )}
+                        </div>
                       </TableHead>
                     );
                   })}
