@@ -5,9 +5,11 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 
-import { useTableStore } from "../TableStore";
+import { useTableSearchParams } from "../../../hooks/useTableSearchParams";
 
 import { PaginationButton } from "./PaginationButton";
+
+import { PaginationOptions } from "@entities/common/PaginationResponse";
 
 function generatePagination(
   currentPage: number,
@@ -31,10 +33,23 @@ function generatePagination(
   return paginationArray;
 }
 
-export function Pagination() {
-  const { paginationResponse, paginationsChange } = useTableStore();
-  const { page, lastPage } = paginationResponse;
-  const { changePage } = paginationsChange;
+interface PaginationProps {
+  pagination?: PaginationOptions;
+}
+
+export function Pagination(props: PaginationProps) {
+  const { pagination } = props;
+
+  const { lastPage, page } = pagination || {
+    lastPage: 0,
+    length: 0,
+    page: 0,
+    size: 0,
+  };
+
+  const { changes } = useTableSearchParams();
+
+  const { changePage } = changes;
 
   const pages = generatePagination(page, lastPage - 1, 5);
 

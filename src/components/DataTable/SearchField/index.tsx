@@ -6,7 +6,7 @@ import { TextField } from "@components/TextField";
 import { Button } from "@components/Button";
 import { SelectField } from "@components/SelectField";
 
-import { useTableStore } from "../TableStore";
+import { useTableSearchParams } from "../../../hooks/useTableSearchParams";
 
 export interface SearchOption<TData> {
   label: string;
@@ -19,28 +19,31 @@ interface SearchFieldProps<TData> {
 export function SearchField<TData>(props: SearchFieldProps<TData>) {
   const { searchOptions } = props;
 
-  const { paginationParams, paginationsChange } = useTableStore();
-  const { field } = paginationParams;
-  const { changeSearch, changeField } = paginationsChange;
+  const { changes } = useTableSearchParams();
 
-  const [query, setQuery] = useState("");
+  const { changeSearch } = changes;
+
+  const [query, setQuery] = useState<string | null>(null);
+  const [field, setField] = useState<string | null>(null);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => changeSearch(query), 500);
+    if (typeof query !== "string") return;
+    if (typeof field !== "string") return;
+    const timeoutId = setTimeout(() => changeSearch(query, field), 500);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+  }, [query, field]);
 
   useEffect(() => {
-    changeField(searchOptions[0].value);
+    setField(searchOptions[0].value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchOptions]);
+  }, []);
 
   return (
     <div className="flex gap-2">
       <TextField
         placeholder="Faça a sua pesquisa..."
-        value={query}
+        value={query || ""}
         onChange={setQuery}
         renderLeft={<Search />}
         renderRight={
@@ -57,8 +60,8 @@ export function SearchField<TData>(props: SearchFieldProps<TData>) {
       <SelectField
         options={searchOptions}
         placeholder="Escolha uma coluna para pesquisar"
-        value={field}
-        onValueChange={(value) => changeField(value)}
+        value={field || ""}
+        onValueChange={(value) => setField(value)}
       />
     </div>
   );

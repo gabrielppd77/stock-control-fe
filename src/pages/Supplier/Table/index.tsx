@@ -1,18 +1,24 @@
 import { DataTable } from "@components/DataTable";
 
-import { list } from "@entities/supplier/requests/list";
+import { useSupplierQuery } from "@entities/supplier/useSupplier";
+import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
 export function Table() {
+  const { pagination } = useTableSearchParams();
+  const { data, isLoading, isFetching } = useSupplierQuery(pagination);
+
   return (
     <DataTable
+      data={data?.data}
+      pagination={data?.pagination}
+      isLoading={isLoading}
+      isFetching={isFetching}
       columns={[
         {
           header: "Nome",
           accessorKey: "name",
         },
       ]}
-      queryKey={["supplier"]}
-      queryFn={async (params) => await list({ params })}
       searchOptions={[
         {
           label: "Nome",

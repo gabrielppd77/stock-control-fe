@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import {
   ColumnDef,
   flexRender,
@@ -24,51 +22,36 @@ import { SelectField } from "@components/SelectField";
 
 import { Pagination } from "./Pagination";
 import { SearchField, SearchOption } from "./SearchField";
+import { PaginationOptions } from "@entities/common/PaginationResponse";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { PaginationResponse } from "@entities/common/PaginationResponse";
-import { PaginationParams } from "@entities/common/PaginationParams";
 import { cn } from "@lib/utils";
 
-import { useTableStore } from "./TableStore";
+import { useTableSearchParams } from "../../hooks/useTableSearchParams";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  queryKey: string[];
-  queryFn: (params: PaginationParams) => Promise<PaginationResponse<TData[]>>;
   searchOptions: SearchOption<TData>[];
+  isLoading: boolean;
+  isFetching: boolean;
+  data?: TData[];
+  pagination?: PaginationOptions;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  queryKey,
-  queryFn,
   searchOptions,
+  isLoading,
+  isFetching,
+  data: _data,
+  pagination: _pagination,
 }: DataTableProps<TData, TValue>) {
-  const { paginationParams, paginationsChange, changePaginationResponse } =
-    useTableStore();
-  const { order, sort, size } = paginationParams;
-  const { changeSortHeader, changeSize } = paginationsChange;
+  const { changes, pagination } = useTableSearchParams();
 
-  const {
-    data: _d,
-    isLoading,
-    isFetching,
-  } = useQuery({
-    queryKey: [...queryKey, paginationParams],
-    queryFn: () => queryFn(paginationParams),
-  });
-
-  useEffect(() => {
-    if (_d?.pagination) {
-      changePaginationResponse(_d?.pagination);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_d?.pagination]);
+  const { order, sort, size } = pagination;
+  const { changeSize, changeSort } = changes;
 
   const table = useReactTable({
-    data: _d?.data || [],
+    data: _data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -87,7 +70,7 @@ export function DataTable<TData, TValue>({
                     return (
                       <TableHead
                         onClick={() =>
-                          changeSortHeader(
+                          changeSort(
                             header.id,
                             order === "desc" ? "asc" : "desc",
                           )
@@ -156,7 +139,7 @@ export function DataTable<TData, TValue>({
 
         <div className="flex items-center justify-center">
           <div className="-mr-20 flex-1 justify-center">
-            <Pagination />
+            <Pagination pagination={_pagination} />
           </div>
           <div className="flex h-full w-20 items-center">
             <SelectField
