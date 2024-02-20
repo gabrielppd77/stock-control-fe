@@ -6,13 +6,17 @@ import { list } from "./requests/list";
 import { create } from "./requests/create";
 import { update } from "./requests/update";
 
+import { extractError } from "@lib/alert";
+
 const query = ["suppliers"];
 
 export function useSupplierQuery(props: PaginationParams) {
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: [...query, props],
     queryFn: () => list({ params: props }),
   });
+
+  if (error) extractError(error);
 
   return { data, isLoading, isFetching };
 }
@@ -27,6 +31,7 @@ export function useSupplierMutate() {
         await queryClient.invalidateQueries({
           queryKey: query,
         }),
+      onError: extractError,
     });
 
   const { mutateAsync: mutateAsyncUpdate, isPending: isLoadingUpdate } =
@@ -36,6 +41,7 @@ export function useSupplierMutate() {
         await queryClient.invalidateQueries({
           queryKey: query,
         }),
+      onError: extractError,
     });
 
   return {
