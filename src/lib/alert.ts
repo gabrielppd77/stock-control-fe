@@ -2,6 +2,8 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 
 import { AxiosError, HttpStatusCode } from "axios";
 
+import colors from "tailwindcss/colors";
+
 interface ResponseData {
   statusCode: HttpStatusCode;
   message: string | string[];
@@ -32,5 +34,24 @@ export function extractError(err: unknown) {
     text,
     confirmButtonText: "Beleza!",
     showCloseButton: true,
+  });
+}
+
+export function confirmDelete(onConfirm: () => Promise<void>) {
+  Swal.fire({
+    icon: "question",
+    title: "Você realmente quer remover?",
+    text: "As alterações não poderão ser desfeitas",
+    showConfirmButton: true,
+    showCancelButton: true,
+    reverseButtons: true,
+    confirmButtonText: "Sim",
+    confirmButtonColor: colors.red[500],
+    cancelButtonText: "Não",
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+     await onConfirm();
+    },
+    allowOutsideClick: () => !Swal.isLoading()
   });
 }

@@ -5,6 +5,7 @@ import {
   ButtonProps as ButtonPropsUI,
 } from "@components/ui/button";
 import { LoadingSpinner } from "@components/LoadingSpinner";
+import { cn } from "@lib/utils";
 
 interface ButtonProps extends ButtonPropsUI {
   children: ReactNode;
@@ -19,7 +20,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <ButtonUI
-        className={isLoading ? "group" : ""}
+        className={cn("transition duration-200 hover:scale-110", {
+          ["group"]: isLoading,
+        })}
         disabled={disabled || isLoading}
         ref={ref}
         {...rest}

@@ -5,6 +5,7 @@ import { PaginationParams } from "@entities/common/PaginationParams";
 import { list } from "./requests/list";
 import { create } from "./requests/create";
 import { update } from "./requests/update";
+import { remove } from "./requests/remove";
 
 import { extractError } from "@lib/alert";
 
@@ -27,8 +28,8 @@ export function useSupplierMutate() {
   const { mutateAsync: mutateAsyncCreate, isPending: isLoadingCreate } =
     useMutation({
       mutationFn: create,
-      onSuccess: async () =>
-        await queryClient.invalidateQueries({
+      onSuccess: () =>
+        queryClient.invalidateQueries({
           queryKey: query,
         }),
       onError: extractError,
@@ -37,8 +38,18 @@ export function useSupplierMutate() {
   const { mutateAsync: mutateAsyncUpdate, isPending: isLoadingUpdate } =
     useMutation({
       mutationFn: update,
-      onSuccess: async () =>
-        await queryClient.invalidateQueries({
+      onSuccess: () =>
+        queryClient.invalidateQueries({
+          queryKey: query,
+        }),
+      onError: extractError,
+    });
+
+  const { mutateAsync: mutateAsyncDelete, isPending: isLoadingDelete } =
+    useMutation({
+      mutationFn: remove,
+      onSuccess: () =>
+        queryClient.invalidateQueries({
           queryKey: query,
         }),
       onError: extractError,
@@ -49,5 +60,7 @@ export function useSupplierMutate() {
     isLoadingCreate,
     mutateAsyncUpdate,
     isLoadingUpdate,
+    mutateAsyncDelete,
+    isLoadingDelete,
   };
 }
