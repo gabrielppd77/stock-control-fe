@@ -1,119 +1,55 @@
-import {
-  Pagination as PaginationUI,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-} from "@/components/ui/pagination";
+import { SelectField } from "@components/SelectField";
 
-import { useTableSearchParams } from "../../../hooks/useTableSearchParams";
+import { PaginationControl } from "./PaginationControl";
 
-import { PaginationButton } from "./PaginationButton";
+import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
 import { PaginationOptions } from "@entities/common/PaginationResponse";
-
-function generatePagination(
-  currentPage: number,
-  totalPages: number,
-  visiblePages: number,
-) {
-  const halfVisible = Math.floor(visiblePages / 2);
-  let startPage = Math.max(currentPage - halfVisible, 1);
-  let endPage = startPage + visiblePages - 1;
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(endPage - visiblePages + 1, 1);
-  }
-
-  const paginationArray = [];
-  for (let i = startPage; i <= endPage; i++) {
-    paginationArray.push(i);
-  }
-
-  return paginationArray;
-}
+import { TotalResults } from "./TotalResults";
 
 interface PaginationProps {
   pagination?: PaginationOptions;
 }
 
 export function Pagination(props: PaginationProps) {
-  const { pagination } = props;
+  const { pagination: _pagination } = props;
 
-  const { lastPage, page } = pagination || {
-    lastPage: 0,
-    length: 0,
-    page: 0,
-    size: 0,
-  };
+  const { changes, pagination } = useTableSearchParams();
 
-  const { changes } = useTableSearchParams();
-
-  const { changePage } = changes;
-
-  const pages = generatePagination(page, lastPage - 1, 5);
-
-  const showEllipsis = pages.length > 0;
-
-  const showButtonLastPage = lastPage > 0;
+  const { size } = pagination;
+  const { changeSize } = changes;
 
   return (
-    <div className="flex items-center justify-end space-x-2 py-3">
-      <PaginationUI>
-        <PaginationContent>
-          <PaginationButton
-            disabled={page <= 0}
-            onClick={() => changePage(page - 1)}
-          >
-            Anterior
-          </PaginationButton>
+    <div className="flex items-center justify-center">
+      <div className="flex h-full w-56 items-center">
+        <TotalResults pagination={_pagination} />
+      </div>
 
-          <PaginationButton
-            onClick={() => changePage(0)}
-            isSelected={page == 0}
-          >
-            1
-          </PaginationButton>
+      <div className="-ml-56 -mr-20 flex-1 justify-center">
+        <PaginationControl pagination={_pagination} />
+      </div>
 
-          {showEllipsis && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {pages.map((index) => (
-            <PaginationButton
-              key={index}
-              isSelected={index === page}
-              onClick={() => changePage(index)}
-            >
-              {index + 1}
-            </PaginationButton>
-          ))}
-
-          {showEllipsis && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {showButtonLastPage && (
-            <PaginationButton
-              onClick={() => changePage(lastPage)}
-              isSelected={page == lastPage}
-            >
-              {lastPage + 1}
-            </PaginationButton>
-          )}
-
-          <PaginationButton
-            disabled={page >= lastPage}
-            onClick={() => changePage(page + 1)}
-          >
-            Próximo
-          </PaginationButton>
-        </PaginationContent>
-      </PaginationUI>
+      <div className="flex h-full w-20 items-center">
+        <SelectField
+          placeholder=""
+          value={size.toString()}
+          onValueChange={(value) => changeSize(parseInt(value))}
+          options={[
+            {
+              label: "10",
+              value: "10",
+            },
+            {
+              label: "15",
+              value: "15",
+            },
+            {
+              label: "20",
+              value: "20",
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 }

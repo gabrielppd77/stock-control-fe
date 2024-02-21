@@ -12,11 +12,11 @@ export interface SearchOption<TData> {
   label: string;
   value: keyof TData extends string ? keyof TData : never;
 }
-interface SearchFieldProps<TData> {
+interface SearchControlProps<TData> {
   searchOptions: SearchOption<TData>[];
 }
 
-export function SearchField<TData>(props: SearchFieldProps<TData>) {
+export function SearchControl<TData>(props: SearchControlProps<TData>) {
   const { searchOptions } = props;
 
   const { changes } = useTableSearchParams();

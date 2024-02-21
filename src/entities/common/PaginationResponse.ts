@@ -3,6 +3,8 @@ export interface PaginationOptions {
   size: number;
   lastPage: number;
   page: number;
+  startIndex: number;
+  endIndex: number;
 }
 
 export interface PaginationResponse<DataType> {
