@@ -1,23 +1,27 @@
-import { useState, useEffect } from "react";
+import { z } from "zod";
 
 import { TextField } from "@components/TextField";
 import { ActionForm } from "@components/ActionForm";
 
 import { useSupplierMutate } from "@entities/supplier/useSupplier";
+import { SelectField } from "@components/SelectField";
 
-interface DataForm {
-  id: string;
-  name: string;
-}
+const FormSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, { message: "Informe o nome" }),
+});
+
+type FormType = z.infer<typeof FormSchema>;
 
 interface FormProps {
   close: () => void;
-  data: DataForm | null;
+  data: FormType | null;
 }
 
 export function Form(props: FormProps) {
   const { close, data: _data } = props;
-  const [data, setData] = useState<Partial<DataForm>>({});
+
+  const defaultValues: FormType = _data || { name: "" };
 
   const {
     mutateAsyncCreate,
@@ -28,27 +32,33 @@ export function Form(props: FormProps) {
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
 
-  useEffect(() => {
-    if (_data) {
-      setData(_data);
-    }
-  }, [_data]);
-
-  async function handleSubmit() {
+  async function onSubmit(data: FormType) {
     if (data.id) {
-      await mutateAsyncUpdate(data as DataForm);
+      await mutateAsyncUpdate({ id: data.id, name: data.name });
     } else {
-      await mutateAsyncCreate(data as DataForm);
+      await mutateAsyncCreate(data);
     }
     close();
   }
 
   return (
-    <ActionForm onSubmit={handleSubmit} onCancel={close} isLoading={isLoading}>
-      <TextField
+    <ActionForm
+      onSubmit={onSubmit}
+      onCancel={close}
+      isLoading={isLoading}
+      schema={FormSchema}
+      defaultValues={defaultValues}
+    >
+      <TextField label="Nome" name="name" />
+      <SelectField
         label="Nome"
-        onChange={(value) => setData((prev) => ({ ...prev, name: value }))}
-        value={data.name || ""}
+        name="name"
+        options={[
+          {
+            label: "1",
+            value: "1",
+          },
+        ]}
       />
     </ActionForm>
   );

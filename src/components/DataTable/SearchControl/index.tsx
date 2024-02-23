@@ -41,7 +41,7 @@ export function SearchControl<TData>(props: SearchControlProps<TData>) {
 
   return (
     <div className="flex gap-2">
-      <TextField
+      {/* <TextField
         placeholder="Faça a sua pesquisa..."
         value={query || ""}
         onChange={setQuery}
@@ -56,13 +56,13 @@ export function SearchControl<TData>(props: SearchControlProps<TData>) {
             <X className="h-4 w-4" />
           </Button>
         }
-      />
-      <SelectField
+      /> */}
+      {/* <SelectField
         options={searchOptions}
         placeholder="Escolha uma coluna para pesquisar"
         value={field || ""}
         onValueChange={(value) => setField(value)}
-      />
+      /> */}
     </div>
   );
 }

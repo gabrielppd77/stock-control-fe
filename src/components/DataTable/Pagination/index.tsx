@@ -21,16 +21,13 @@ export function Pagination(props: PaginationProps) {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex h-full w-56 items-center">
+      <div className="-mr-20 flex flex-1 items-center justify-center gap-4">
+        <PaginationControl pagination={_pagination} />
         <TotalResults pagination={_pagination} />
       </div>
 
-      <div className="-ml-56 -mr-20 flex-1 justify-center">
-        <PaginationControl pagination={_pagination} />
-      </div>
-
       <div className="flex h-full w-20 items-center">
-        <SelectField
+        {/* <SelectField
           placeholder=""
           value={size.toString()}
           onValueChange={(value) => changeSize(parseInt(value))}
@@ -48,7 +45,7 @@ export function Pagination(props: PaginationProps) {
               value: "20",
             },
           ]}
-        />
+        /> */}
       </div>
     </div>
   );
