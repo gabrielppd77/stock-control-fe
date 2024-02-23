@@ -13,19 +13,17 @@ export function TotalResults(props: TotalResultsProps) {
 
   return (
     <span className="text-sm text-gray-700 dark:text-gray-400">
-      Mostrando{" "}
       <span className="font-semibold text-gray-900 dark:text-white">
         {startIndex}
-      </span>{" "}
-      /{" "}
+      </span>
+      /
       <span className="font-semibold text-gray-900 dark:text-white">
         {endIndex}
       </span>{" "}
-      de{" "}
+      -{" "}
       <span className="font-semibold text-gray-900 dark:text-white">
         {length}
-      </span>{" "}
-      Resultados
+      </span>
     </span>
   );
 }

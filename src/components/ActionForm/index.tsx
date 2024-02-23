@@ -1,23 +1,49 @@
 import { ReactNode } from "react";
-import { Button } from "@components/Button";
 
-interface ActionFormProps {
+import { Button } from "@components/Button";
+import { Form } from "@/components/ui/form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DefaultValues, FieldValues, useForm } from "react-hook-form";
+
+import type { ZodSchema } from "zod";
+
+interface ActionFormProps<
+  TSchema extends ZodSchema,
+  TFieldValues extends FieldValues,
+> {
+  onSubmit: (data: TFieldValues) => void;
   onCancel: () => void;
-  onSubmit: () => void;
   isLoading?: boolean;
   children: ReactNode;
+  schema: TSchema;
+  defaultValues?: DefaultValues<TFieldValues>;
 }
 
-export function ActionForm(props: ActionFormProps) {
-  const { onCancel, onSubmit, isLoading, children } = props;
+export function ActionForm<
+  TSchema extends ZodSchema,
+  TFieldValues extends FieldValues = FieldValues,
+>(props: ActionFormProps<TSchema, TFieldValues>) {
+  const { onCancel, onSubmit, isLoading, children, schema, defaultValues } =
+    props;
+
+  const form = useForm<TFieldValues>({
+    resolver: zodResolver(schema),
+    defaultValues,
+  });
+
   return (
-    <div>
-      <div>{children}</div>
-      <div>
-        <Button variant="outline" onClick={() => onCancel()}>
+    <div className="space-y-4">
+      <Form {...form}>{children}</Form>
+      <div className="flex gap-4">
+        <Button fullWidth variant="outline" onClick={() => onCancel()}>
           Cancelar
         </Button>
-        <Button onClick={() => onSubmit()} isLoading={isLoading}>
+        <Button
+          fullWidth
+          onClick={form.handleSubmit(onSubmit)}
+          isLoading={isLoading}
+        >
           Salvar
         </Button>
       </div>

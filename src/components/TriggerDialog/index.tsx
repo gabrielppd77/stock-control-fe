@@ -28,9 +28,12 @@ export function TriggerDialog(props: TriggerDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+      <DialogContent
+        className="gap-3"
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="text-xl">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children(close)}

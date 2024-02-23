@@ -12,16 +12,25 @@ interface ButtonProps extends ButtonPropsUI {
   icon?: ElementType;
   isLoading?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props: ButtonProps, ref) => {
-    const { children, icon: Icon, isLoading, disabled, ...rest } = props;
+    const {
+      children,
+      icon: Icon,
+      isLoading,
+      disabled,
+      fullWidth,
+      ...rest
+    } = props;
 
     return (
       <ButtonUI
-        className={cn("transition duration-200 hover:scale-110", {
+        className={cn("transition duration-200 hover:scale-105", {
           ["group"]: isLoading,
+          ["w-full"]: fullWidth,
         })}
         disabled={disabled || isLoading}
         ref={ref}
