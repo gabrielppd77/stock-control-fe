@@ -27,10 +27,9 @@ export function Pagination(props: PaginationProps) {
       </div>
 
       <div className="flex h-full w-20 items-center">
-        {/* <SelectField
-          placeholder=""
+        <SelectField
           value={size.toString()}
-          onValueChange={(value) => changeSize(parseInt(value))}
+          onChange={(value) => changeSize(parseInt(value))}
           options={[
             {
               label: "10",
@@ -45,7 +44,7 @@ export function Pagination(props: PaginationProps) {
               value: "20",
             },
           ]}
-        /> */}
+        />
       </div>
     </div>
   );

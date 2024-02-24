@@ -4,7 +4,6 @@ import { TextField } from "@components/TextField";
 import { ActionForm } from "@components/ActionForm";
 
 import { useSupplierMutate } from "@entities/supplier/useSupplier";
-import { SelectField } from "@components/SelectField";
 
 const FormSchema = z.object({
   id: z.string().optional(),
@@ -50,16 +49,6 @@ export function Form(props: FormProps) {
       defaultValues={defaultValues}
     >
       <TextField label="Nome" name="name" />
-      <SelectField
-        label="Nome"
-        name="name"
-        options={[
-          {
-            label: "1",
-            value: "1",
-          },
-        ]}
-      />
     </ActionForm>
   );
 }
