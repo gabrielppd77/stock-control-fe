@@ -9,6 +9,8 @@ import { remove } from "./requests/remove";
 
 import { extractError } from "@lib/alert";
 
+import { notifyCreate, notifyUpdate, notifyRemove } from "@lib/notification";
+
 const query = ["suppliers"];
 
 export function useSupplierQuery(props: PaginationParams) {
@@ -28,30 +30,36 @@ export function useSupplierMutate() {
   const { mutateAsync: mutateAsyncCreate, isPending: isLoadingCreate } =
     useMutation({
       mutationFn: create,
-      onSuccess: () =>
+      onSuccess: () => {
+        notifyCreate();
         queryClient.invalidateQueries({
           queryKey: query,
-        }),
+        });
+      },
       onError: extractError,
     });
 
   const { mutateAsync: mutateAsyncUpdate, isPending: isLoadingUpdate } =
     useMutation({
       mutationFn: update,
-      onSuccess: () =>
+      onSuccess: () => {
+        notifyUpdate();
         queryClient.invalidateQueries({
           queryKey: query,
-        }),
+        });
+      },
       onError: extractError,
     });
 
   const { mutateAsync: mutateAsyncDelete, isPending: isLoadingDelete } =
     useMutation({
       mutationFn: remove,
-      onSuccess: () =>
+      onSuccess: () => {
+        notifyRemove();
         queryClient.invalidateQueries({
           queryKey: query,
-        }),
+        });
+      },
       onError: extractError,
     });
 
