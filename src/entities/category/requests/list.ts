@@ -2,7 +2,6 @@ import { api } from "@lib/api";
 
 import { PaginationParams } from "@entities/common/PaginationParams";
 import { PaginationResponse } from "@entities/common/PaginationResponse";
-
 import { CategoryPresenter } from "../dtos/CategoryPresenter";
 
 interface RequestProps {
