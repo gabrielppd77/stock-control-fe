@@ -1,5 +1,7 @@
 import { api } from "@lib/api";
 
-export async function create(data: { name: string }) {
+import { CategoryCreateDTO } from "../dtos/category-create.dto";
+
+export async function create(data: CategoryCreateDTO) {
   await api.post("/categories", data);
 }
