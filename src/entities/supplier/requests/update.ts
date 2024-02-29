@@ -1,6 +1,11 @@
 import { api } from "@lib/api";
+import { SupplierUpdateDTO } from "../dtos/supplier-update.dto";
 
-export async function update(data: { id: string; name: string }) {
-  const { id, ...rest } = data;
-  await api.put("/suppliers/" + id, rest);
+interface UpdateProps {
+  id: string;
+  data: SupplierUpdateDTO;
+}
+
+export async function update({ id, data }: UpdateProps) {
+  await api.put("/suppliers/" + id, data);
 }

@@ -1,16 +1,15 @@
 import { api } from "@lib/api";
 
-import { PaginationParams } from "@entities/common/PaginationParams";
-import { PaginationResponse } from "@entities/common/PaginationResponse";
-import { SupplierPresenter } from "../dtos/SupplierPresenter";
+import { PaginationQuery } from "@entities/common/pagination.query";
+import { PaginationPresenter } from "@entities/common/pagination.presenter";
+import { SupplierPresenter } from "../dtos/supplier.presenter";
 
 interface RequestProps {
-  params: PaginationParams;
+  params: PaginationQuery<SupplierPresenter>;
 }
 
-export async function list(props: RequestProps) {
-  const { params } = props;
-  const response = await api.get<PaginationResponse<SupplierPresenter[]>>(
+export async function list({ params }: RequestProps) {
+  const response = await api.get<PaginationPresenter<SupplierPresenter[]>>(
     "/suppliers",
     {
       params,

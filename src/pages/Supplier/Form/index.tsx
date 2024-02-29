@@ -33,7 +33,7 @@ export function Form(props: FormProps) {
 
   async function onSubmit(data: FormType) {
     if (data.id) {
-      await mutateAsyncUpdate({ id: data.id, name: data.name });
+      await mutateAsyncUpdate({ id: data.id, data });
     } else {
       await mutateAsyncCreate(data);
     }
