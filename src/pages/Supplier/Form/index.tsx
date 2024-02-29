@@ -31,15 +31,14 @@ export function Form(props: FormProps) {
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
 
-  async function onSubmit(data: FormType) {
-    if (data.id) {
-      await mutateAsyncUpdate({ id: data.id, data });
+  async function onSubmit({ id, ...data }: FormType) {
+    if (id) {
+      await mutateAsyncUpdate({ id, data });
     } else {
       await mutateAsyncCreate(data);
     }
     close();
   }
-
   return (
     <ActionForm
       onSubmit={onSubmit}
