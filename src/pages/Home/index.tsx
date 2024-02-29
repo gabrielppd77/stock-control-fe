@@ -1,9 +1,10 @@
+import { Container } from "@components/Container";
 import { PageHeader } from "@components/PageHeader";
 
 export function Home() {
   return (
-    <div className="flex flex-col gap-2">
+    <Container>
       <PageHeader title="Bem vindo" />
-    </div>
+    </Container>
   );
 }

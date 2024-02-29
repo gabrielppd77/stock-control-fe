@@ -1,3 +1,4 @@
+import { Container } from "@components/Container";
 import { PageHeader } from "@components/PageHeader";
 import { TriggerDialog } from "@components/TriggerDialog";
 import { Button } from "@components/Button";
@@ -9,7 +10,7 @@ import { Table } from "./Table";
 
 export function Product() {
   return (
-    <div className="flex h-full flex-col gap-4">
+    <Container>
       <PageHeader
         title="Produtos"
         renderRight={
@@ -25,6 +26,6 @@ export function Product() {
       <div className="flex-1">
         <Table />
       </div>
-    </div>
+    </Container>
   );
 }

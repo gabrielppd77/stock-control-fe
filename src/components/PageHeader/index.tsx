@@ -2,7 +2,7 @@ import { Separator } from "@components/ui/separator";
 
 interface PageHeaderProps {
   title: string;
-  renderRight: React.ReactNode;
+  renderRight?: React.ReactNode;
 }
 
 export function PageHeader(props: PageHeaderProps) {
