@@ -9,7 +9,7 @@ import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
 import { PaginationButton } from "./PaginationButton";
 
-import { PaginationOptions } from "@entities/common/PaginationResponse";
+import { PageOptionsPresenter } from "@entities/common/pagination.presenter";
 
 function generatePagination(
   currentPage: number,
@@ -34,7 +34,7 @@ function generatePagination(
 }
 
 interface PaginationControlProps {
-  pagination?: PaginationOptions;
+  pagination?: PageOptionsPresenter;
 }
 
 export function PaginationControl(props: PaginationControlProps) {

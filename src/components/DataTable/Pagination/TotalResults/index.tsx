@@ -1,7 +1,7 @@
-import { PaginationOptions } from "@entities/common/PaginationResponse";
+import { PageOptionsPresenter } from "@entities/common/pagination.presenter";
 
 interface TotalResultsProps {
-  pagination?: PaginationOptions;
+  pagination?: PageOptionsPresenter;
 }
 
 export function TotalResults(props: TotalResultsProps) {

@@ -4,11 +4,11 @@ import { PaginationControl } from "./PaginationControl";
 
 import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
-import { PaginationOptions } from "@entities/common/PaginationResponse";
+import { PageOptionsPresenter } from "@entities/common/pagination.presenter";
 import { TotalResults } from "./TotalResults";
 
 interface PaginationProps {
-  pagination?: PaginationOptions;
+  pagination?: PageOptionsPresenter;
 }
 
 export function Pagination(props: PaginationProps) {

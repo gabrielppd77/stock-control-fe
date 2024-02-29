@@ -13,7 +13,7 @@ import { SearchControl, SearchOption } from "./SearchControl";
 import { Body } from "./Body";
 import { Pagination } from "./Pagination";
 
-import { PaginationOptions } from "@entities/common/PaginationResponse";
+import { PageOptionsPresenter } from "@entities/common/pagination.presenter";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -21,7 +21,7 @@ interface DataTableProps<TData, TValue> {
   isLoading: boolean;
   isFetching: boolean;
   data?: TData[];
-  pagination?: PaginationOptions;
+  pagination?: PageOptionsPresenter;
 }
 
 export function DataTable<TData, TValue>({
