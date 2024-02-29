@@ -1,17 +1,17 @@
 import { useSearchParams } from "react-router-dom";
 
-export function useTableSearchParams() {
+export function useTableSearchParams<DataType>() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = searchParams.get("page") || "0";
   const size = searchParams.get("size") || "10";
-  const sort = searchParams.get("sort") || undefined;
+  const sort = (searchParams.get("sort") || undefined) as keyof DataType;
   const order = (searchParams.get("order") || undefined) as
     | "asc"
     | "desc"
     | undefined;
   const search = searchParams.get("search") || undefined;
-  const field = searchParams.get("field") || undefined;
+  const field = (searchParams.get("field") || undefined) as keyof DataType;
 
   async function changeSize(size: number) {
     searchParams.set("size", size.toString());
