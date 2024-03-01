@@ -31,6 +31,38 @@ export function Table() {
           accessorKey: "name",
         },
         {
+          header: "Fornecedor",
+          accessorKey: "supplierId",
+          cell: ({ row }) => {
+            const data = row.original;
+            return data.supplierName;
+          },
+        },
+        {
+          header: "Categoria",
+          accessorKey: "categoryId",
+          cell: ({ row }) => {
+            const data = row.original;
+            return data.categoryName;
+          },
+        },
+        {
+          header: "Cor",
+          accessorKey: "color",
+        },
+        {
+          header: "Tecido",
+          accessorKey: "fabric",
+        },
+        {
+          header: "Medidas",
+          accessorKey: "measure",
+        },
+        {
+          header: "Data de Entrada",
+          accessorKey: "dtEntry",
+        },
+        {
           header: "Ações",
           enableSorting: false,
           size: 120,
@@ -65,6 +97,18 @@ export function Table() {
         {
           label: "Nome",
           value: "name",
+        },
+        {
+          label: "Cor",
+          value: "color",
+        },
+        {
+          label: "Tecido",
+          value: "fabric",
+        },
+        {
+          label: "Medidas",
+          value: "measure",
         },
       ]}
     />
