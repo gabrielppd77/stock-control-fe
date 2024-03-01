@@ -6,8 +6,18 @@ import { ActionForm } from "@components/ActionForm";
 import { useProductMutate } from "@entities/product/useProduct";
 
 const FormSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().min(1, { message: "Informe o nome" }),
+  replicate: z.number(),
+  supplierId: z.string().min(1, { message: "Informe o Fornecedor" }),
+  categoryId: z.string().min(1, { message: "Informe a Categoria" }),
+  name: z.string().min(1, { message: "Informe o Nome" }),
+  color: z.string().optional(),
+  fabric: z.string().optional(),
+  measure: z.string().optional(),
+  dtEntry: z.string().optional(),
+  dtDeparture: z.string().optional(),
+  nrClient: z.string().optional(),
+  fiscalNoteEntry: z.string().optional(),
+  fiscalNoteDeparture: z.string().optional(),
 });
 
 type FormType = z.infer<typeof FormSchema>;
@@ -20,23 +30,28 @@ interface FormProps {
 export function Form(props: FormProps) {
   const { close, data: _data } = props;
 
-  const defaultValues: FormType = _data || { name: "" };
+  const defaultValues: FormType = _data || {
+    replicate: 1,
+    supplierId: "",
+    categoryId: "",
+    name: "",
+    color: "",
+    fabric: "",
+    measure: "",
+    dtEntry: "",
+    dtDeparture: "",
+    nrClient: "",
+    fiscalNoteEntry: "",
+    fiscalNoteDeparture: "",
+  };
 
-  const {
-    mutateAsyncCreate,
-    isLoadingCreate,
-    mutateAsyncUpdate,
-    isLoadingUpdate,
-  } = useProductMutate();
+  const { mutateAsyncCreate, isLoadingCreate: isLoading } = useProductMutate();
 
-  const isLoading = isLoadingCreate || isLoadingUpdate;
-
-  async function onSubmit({ id, ...data }: FormType) {
-    if (id) {
-      await mutateAsyncUpdate({ id, data });
-    } else {
-      await mutateAsyncCreate(data);
-    }
+  async function onSubmit({ replicate, ...data }: FormType) {
+    await mutateAsyncCreate({
+      replicate,
+      data,
+    });
     close();
   }
   return (
