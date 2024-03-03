@@ -4,6 +4,7 @@ import { TextField } from "@components/TextField";
 import { ActionForm } from "@components/ActionForm";
 
 import { useProductMutate } from "@entities/product/useProduct";
+import { AutoComplete } from "@components/AutoComplete";
 
 const FormSchema = z.object({
   replicate: z.number(),
@@ -63,6 +64,18 @@ export function Form(props: FormProps) {
       defaultValues={defaultValues}
     >
       <TextField label="Nome" name="name" />
+
+      <AutoComplete
+        label="Fornecedor"
+        name="supplierId"
+        data={[
+          { value: "1", label: "1 label" },
+          { value: "2", label: "2 label" },
+          { value: "3", label: "3 label" },
+          { value: "4", label: "4 label" },
+          { value: "5", label: "5 label" },
+        ]}
+      />
     </ActionForm>
   );
 }
