@@ -49,15 +49,15 @@ export function AutoComplete({
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string | null>(null);
 
+  const { formState } = useFormContext();
+  const defaultValues = formState.defaultValues;
+
   React.useEffect(() => {
     if (typeof search !== "string") return;
     const timeoutId = setTimeout(() => onSearch(search, "search"), 300);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
-  const { formState } = useFormContext();
-  const defaultValues = formState.defaultValues;
 
   React.useEffect(() => {
     if (defaultValues && defaultValues[name]) {

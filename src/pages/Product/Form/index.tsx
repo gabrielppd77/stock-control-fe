@@ -5,6 +5,7 @@ import { ActionForm } from "@components/ActionForm";
 import { AutoCompleteSupplier } from "@components/AutoCompleteSupplier";
 
 import { useProductMutate } from "@entities/product/useProduct";
+import { AutoCompleteCategory } from "@components/AutoCompleteCategory";
 
 const FormSchema = z.object({
   replicate: z.number(),
@@ -65,6 +66,7 @@ export function Form(props: FormProps) {
     >
       <TextField label="Nome" name="name" />
       <AutoCompleteSupplier label="Fornecedor" name="supplierId" />
+      <AutoCompleteCategory label="Categoria" name="categoryId" />
     </ActionForm>
   );
 }
