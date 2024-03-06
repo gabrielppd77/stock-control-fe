@@ -21,9 +21,12 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  FormLabel,
 } from "@components/ui/form";
+import { LoadingSpinner } from "@components/LoadingSpinner";
+import { LinearProgress } from "@components/LinearProgress";
 
-interface AutoCompleteData {
+export interface AutoCompleteData {
   value: string;
   label: string;
 }
@@ -32,10 +35,29 @@ interface AutoCompleteProps {
   label: string;
   name: string;
   data: AutoCompleteData[];
+  isLoading?: boolean;
+  isFetching?: boolean;
+  onSearch: (search: string) => void;
 }
 
-export function AutoComplete({ label, name, data }: AutoCompleteProps) {
+export function AutoComplete({
+  label,
+  name,
+  data,
+  isLoading,
+  isFetching,
+  onSearch,
+}: AutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (typeof search !== "string") return;
+    const timeoutId = setTimeout(() => onSearch(search), 300);
+    return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
   return (
     <FormField
       name={name}
@@ -45,21 +67,52 @@ export function AutoComplete({ label, name, data }: AutoCompleteProps) {
           <FormItem>
             <FormControl>
               <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-[200px] justify-between"
-                  >
-                    {value ? data.find((d) => d.value === value)?.label : label}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
+                <PopoverTrigger className="group" asChild>
+                  <div className="relative">
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between group-hover:bg-secondary/80"
+                    >
+                      {value ? (
+                        data.find((d) => d.value === value)?.label || <div />
+                      ) : (
+                        <div />
+                      )}
+                      {isLoading ? (
+                        <LoadingSpinner />
+                      ) : (
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      )}
+                    </Button>
+                    <FormLabel
+                      className={cn(
+                        "absolute start-2 z-10 bg-white px-2 text-sm duration-300 group-hover:cursor-pointer group-hover:bg-secondary/80",
+                        "top-1/2 -translate-y-1/2 scale-100 focus:top-1 focus:-translate-y-4 focus:scale-75 focus:px-2 rtl:focus:left-auto rtl:focus:translate-x-1/4",
+                        {
+                          ["top-2.5  origin-[0] -translate-y-5 scale-75 transform group-hover:bg-transparent"]:
+                            value,
+                        },
+                      )}
+                    >
+                      {label}
+                    </FormLabel>
+                  </div>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput className="h-9" />
-                    <CommandEmpty>Sem resultados.</CommandEmpty>
+                <PopoverContent className="popover-content-width-same-as-its-trigger p-1">
+                  <Command shouldFilter={false}>
+                    <CommandInput
+                      className="h-9"
+                      onValueChange={(searchQuery) => {
+                        setSearch(searchQuery);
+                        onChange("");
+                      }}
+                    />
+                    <div className="h-1.5">
+                      {isFetching && <LinearProgress />}
+                    </div>
+                    <CommandEmpty>Sem resultados</CommandEmpty>
                     <CommandGroup>
                       {data.map((d) => (
                         <CommandItem
