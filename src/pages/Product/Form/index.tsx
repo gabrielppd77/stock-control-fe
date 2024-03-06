@@ -33,7 +33,7 @@ export function Form(props: FormProps) {
 
   const defaultValues: FormType = _data || {
     replicate: 1,
-    supplierId: "2433237e-63d2-4863-85af-fb7f0af9e3e7",
+    supplierId: "",
     categoryId: "",
     name: "",
     color: "",
@@ -64,7 +64,7 @@ export function Form(props: FormProps) {
       defaultValues={defaultValues}
     >
       <TextField label="Nome" name="name" />
-      <AutoCompleteSupplier />
+      <AutoCompleteSupplier label="Fornecedor" name="supplierId" />
     </ActionForm>
   );
 }

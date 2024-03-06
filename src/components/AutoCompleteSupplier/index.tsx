@@ -1,37 +1,45 @@
+import { useState } from "react";
+
 import { AutoComplete, AutoCompleteData } from "@components/AutoComplete";
+import { listSearch } from "@entities/supplier/requests/list-search";
+import { extractError } from "@lib/alert";
 
-import { useSupplierQuerySearch } from "@entities/supplier/useSupplier";
-import { useEffect, useState } from "react";
+interface AutoCompleteSupplierProps {
+  name: string;
+  label: string;
+}
 
-export function AutoCompleteSupplier() {
-  const [search, setSearch] = useState("");
+export function AutoCompleteSupplier({
+  name,
+  label,
+}: AutoCompleteSupplierProps) {
+  const [data, setData] = useState<AutoCompleteData[]>([]);
+  const [isLoading, setLoading] = useState(false);
 
-  const {
-    data: _d,
-    isLoading,
-    isFetching,
-    refetch,
-  } = useSupplierQuerySearch({ field: "name", search });
-
-  useEffect(() => {
-    if (search) {
-      refetch();
+  async function onSearch(search: string, event: "search" | "start") {
+    setLoading(true);
+    try {
+      const data = await listSearch({
+        params: {
+          field: event === "search" ? "name" : "id",
+          search,
+        },
+      });
+      setData(data.map((d) => ({ label: d.name, value: d.id })));
+    } catch (err) {
+      extractError(err);
+    } finally {
+      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
-
-  const data: AutoCompleteData[] = _d
-    ? _d.map((d) => ({ label: d.name, value: d.id }))
-    : [];
+  }
 
   return (
     <AutoComplete
-      label="Fornecedor"
-      name="supplierId"
+      label={label}
+      name={name}
       data={data}
       isLoading={isLoading}
-      isFetching={isFetching}
-      onSearch={setSearch}
+      onSearch={onSearch}
     />
   );
 }

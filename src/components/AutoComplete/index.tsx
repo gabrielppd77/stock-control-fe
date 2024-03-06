@@ -24,7 +24,7 @@ import {
   FormLabel,
 } from "@components/ui/form";
 import { LoadingSpinner } from "@components/LoadingSpinner";
-import { LinearProgress } from "@components/LinearProgress";
+import { useFormContext } from "react-hook-form";
 
 export interface AutoCompleteData {
   value: string;
@@ -36,8 +36,7 @@ interface AutoCompleteProps {
   name: string;
   data: AutoCompleteData[];
   isLoading?: boolean;
-  isFetching?: boolean;
-  onSearch: (search: string) => void;
+  onSearch: (search: string, event: "search" | "start") => void;
 }
 
 export function AutoComplete({
@@ -45,7 +44,6 @@ export function AutoComplete({
   name,
   data,
   isLoading,
-  isFetching,
   onSearch,
 }: AutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
@@ -53,10 +51,20 @@ export function AutoComplete({
 
   React.useEffect(() => {
     if (typeof search !== "string") return;
-    const timeoutId = setTimeout(() => onSearch(search), 300);
+    const timeoutId = setTimeout(() => onSearch(search, "search"), 300);
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+
+  const { formState } = useFormContext();
+  const defaultValues = formState.defaultValues;
+
+  React.useEffect(() => {
+    if (defaultValues && defaultValues[name]) {
+      onSearch(defaultValues[name], "start");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <FormField
@@ -109,9 +117,6 @@ export function AutoComplete({
                         onChange("");
                       }}
                     />
-                    <div className="h-1.5">
-                      {isFetching && <LinearProgress />}
-                    </div>
                     <CommandEmpty>Sem resultados</CommandEmpty>
                     <CommandGroup>
                       {data.map((d) => (
