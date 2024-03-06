@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { PaginationQuery } from "@entities/common/pagination.query";
 import { SupplierPresenter } from "./dtos/supplier.presenter";
+import { SearchQuery } from "@entities/common/search.query";
 
 import { list } from "./requests/list";
+import { listSearch } from "./requests/list-search";
 import { create } from "./requests/create";
 import { update } from "./requests/update";
 import { remove } from "./requests/remove";
@@ -23,6 +25,20 @@ export function useSupplierQuery(props: PaginationQuery<SupplierPresenter>) {
   if (error) extractError(error);
 
   return { data, isLoading, isFetching };
+}
+
+const querySearch = ["suppliers/search"];
+
+export function useSupplierQuerySearch(props: SearchQuery<SupplierPresenter>) {
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
+    queryKey: [...querySearch, props],
+    queryFn: () => listSearch({ params: props }),
+    enabled: false,
+  });
+
+  if (error) extractError(error);
+
+  return { data, isLoading, isFetching, refetch };
 }
 
 export function useSupplierMutate() {

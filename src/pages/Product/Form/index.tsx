@@ -2,9 +2,9 @@ import { z } from "zod";
 
 import { TextField } from "@components/TextField";
 import { ActionForm } from "@components/ActionForm";
+import { AutoCompleteSupplier } from "@components/AutoCompleteSupplier";
 
 import { useProductMutate } from "@entities/product/useProduct";
-import { AutoComplete } from "@components/AutoComplete";
 
 const FormSchema = z.object({
   replicate: z.number(),
@@ -33,7 +33,7 @@ export function Form(props: FormProps) {
 
   const defaultValues: FormType = _data || {
     replicate: 1,
-    supplierId: "",
+    supplierId: "2433237e-63d2-4863-85af-fb7f0af9e3e7",
     categoryId: "",
     name: "",
     color: "",
@@ -64,18 +64,7 @@ export function Form(props: FormProps) {
       defaultValues={defaultValues}
     >
       <TextField label="Nome" name="name" />
-
-      <AutoComplete
-        label="Fornecedor"
-        name="supplierId"
-        data={[
-          { value: "1", label: "1 label" },
-          { value: "2", label: "2 label" },
-          { value: "3", label: "3 label" },
-          { value: "4", label: "4 label" },
-          { value: "5", label: "5 label" },
-        ]}
-      />
+      <AutoCompleteSupplier />
     </ActionForm>
   );
 }
