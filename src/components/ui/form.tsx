@@ -13,6 +13,8 @@ import {
 import { cn } from "@lib/utils";
 import { Label } from "@components/ui/label";
 
+import { motion } from "framer-motion";
+
 const Form = FormProvider;
 
 type FormFieldContextValue<
@@ -153,14 +155,17 @@ const FormMessage = React.forwardRef<
   }
 
   return (
-    <p
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       ref={ref}
       id={formMessageId}
       className={cn("text-sm font-medium text-destructive", className)}
       {...props}
     >
       {body}
-    </p>
+    </motion.p>
   );
 });
 FormMessage.displayName = "FormMessage";

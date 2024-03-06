@@ -36,7 +36,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ease: [0, 0.71, 0.2, 1.01],
           scale: {
             type: "spring",
-            damping: 8,
+            damping: 12,
             stiffness: 100,
             restDelta: 0.001,
           },
