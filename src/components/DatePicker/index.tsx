@@ -30,8 +30,14 @@ export function DatePicker({ name, label }: DatePickerProps) {
   return (
     <FormField
       name={name}
-      render={({ field }) => {
+      render={({ field, formState }) => {
         const { value, onChange } = field;
+        const { defaultValues } = formState;
+
+        if (defaultValues && defaultValues[name] && !value) {
+          onChange(new Date(defaultValues[name]));
+        }
+
         return (
           <FormItem>
             <FormControl>
