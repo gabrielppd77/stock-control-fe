@@ -10,7 +10,7 @@ import {
 
 import { confirmDelete } from "@lib/alert";
 import { TriggerDialog } from "@components/TriggerDialog";
-import { Form } from "../Form";
+import { FormUpdate } from "../Form";
 import { IconButton } from "@components/IconButton";
 
 export function Table() {
@@ -59,10 +59,6 @@ export function Table() {
           accessorKey: "measure",
         },
         {
-          header: "Data de Entrada",
-          accessorKey: "dtEntry",
-        },
-        {
           header: "Ações",
           enableSorting: false,
           size: 120,
@@ -78,7 +74,7 @@ export function Table() {
                     </IconButton>
                   }
                 >
-                  {(close) => <Form close={close} data={data} />}
+                  {(close) => <FormUpdate close={close} data={data} />}
                 </TriggerDialog>
 
                 <IconButton

@@ -5,7 +5,7 @@ import { Button } from "@components/Button";
 
 import { PlusCircle } from "lucide-react";
 
-import { Form } from "./Form";
+import { FormCreate } from "./Form";
 import { Table } from "./Table";
 
 export function Product() {
@@ -18,7 +18,7 @@ export function Product() {
             title="Cadastro de Produto"
             trigger={<Button icon={PlusCircle}>Adicionar</Button>}
           >
-            {(close) => <Form close={close} data={null} />}
+            {(close) => <FormCreate close={close} />}
           </TriggerDialog>
         }
       />
