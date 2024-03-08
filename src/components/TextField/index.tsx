@@ -64,11 +64,20 @@ interface TextFieldProps {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
   renderLeft?: React.ReactNode;
   renderRight?: React.ReactNode;
+  type?: string;
 }
 
 export function TextField(props: TextFieldProps) {
-  const { label, name, placeholder, value, onChange, renderLeft, renderRight } =
-    props;
+  const {
+    label,
+    name,
+    placeholder,
+    value,
+    onChange,
+    renderLeft,
+    renderRight,
+    type,
+  } = props;
 
   const isControlled =
     typeof value !== "undefined" && typeof onChange !== "undefined";
@@ -84,6 +93,7 @@ export function TextField(props: TextFieldProps) {
         labelComponent={Label}
         renderLeft={renderLeft}
         renderRight={renderRight}
+        type={type}
       />
     );
   }
@@ -100,6 +110,7 @@ export function TextField(props: TextFieldProps) {
               labelComponent={FormLabel}
               renderLeft={renderLeft}
               renderRight={renderRight}
+              type={type}
               {...field}
             />
           </FormControl>
