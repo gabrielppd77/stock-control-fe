@@ -7,11 +7,13 @@ import { extractError } from "@lib/alert";
 interface AutoCompleteCategoryProps {
   name: string;
   label: string;
+  disabled?: boolean;
 }
 
 export function AutoCompleteCategory({
   name,
   label,
+  disabled,
 }: AutoCompleteCategoryProps) {
   const [data, setData] = useState<AutoCompleteData[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -40,6 +42,7 @@ export function AutoCompleteCategory({
       data={data}
       isLoading={isLoading}
       onSearch={onSearch}
+      disabled={disabled}
     />
   );
 }

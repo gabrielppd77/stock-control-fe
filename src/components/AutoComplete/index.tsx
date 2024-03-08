@@ -37,6 +37,7 @@ interface AutoCompleteProps {
   data: AutoCompleteData[];
   isLoading?: boolean;
   onSearch: (search: string, event: "search" | "start") => void;
+  disabled?: boolean;
 }
 
 export function AutoComplete({
@@ -45,6 +46,7 @@ export function AutoComplete({
   data,
   isLoading,
   onSearch,
+  disabled,
 }: AutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState<string | null>(null);
@@ -74,10 +76,14 @@ export function AutoComplete({
         return (
           <FormItem>
             <FormControl>
-              <Popover open={open} onOpenChange={setOpen}>
+              <Popover
+                open={open}
+                onOpenChange={disabled ? undefined : setOpen}
+              >
                 <PopoverTrigger className="group" asChild>
                   <div className="relative">
                     <Button
+                      disabled={disabled}
                       variant="outline"
                       role="combobox"
                       aria-expanded={open}

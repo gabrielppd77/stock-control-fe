@@ -7,11 +7,13 @@ import { extractError } from "@lib/alert";
 interface AutoCompleteSupplierProps {
   name: string;
   label: string;
+  disabled?: boolean;
 }
 
 export function AutoCompleteSupplier({
   name,
   label,
+  disabled,
 }: AutoCompleteSupplierProps) {
   const [data, setData] = useState<AutoCompleteData[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -40,6 +42,7 @@ export function AutoCompleteSupplier({
       data={data}
       isLoading={isLoading}
       onSearch={onSearch}
+      disabled={disabled}
     />
   );
 }
