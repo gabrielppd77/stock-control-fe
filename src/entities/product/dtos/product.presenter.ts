@@ -10,8 +10,8 @@ export interface ProductPresenter {
   color?: string;
   fabric?: string;
   measure?: string;
-  dtEntry?: string;
-  dtDeparture?: string;
+  dtEntry?: Date;
+  dtDeparture?: Date;
   nrClient?: string;
   fiscalNoteEntry?: string;
   fiscalNoteDeparture?: string;
