@@ -64,20 +64,11 @@ interface TextFieldProps {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
   renderLeft?: React.ReactNode;
   renderRight?: React.ReactNode;
-  type?: string;
 }
 
 export function TextField(props: TextFieldProps) {
-  const {
-    label,
-    name,
-    placeholder,
-    value,
-    onChange,
-    renderLeft,
-    renderRight,
-    type,
-  } = props;
+  const { label, name, placeholder, value, onChange, renderLeft, renderRight } =
+    props;
 
   const isControlled =
     typeof value !== "undefined" && typeof onChange !== "undefined";
@@ -93,7 +84,6 @@ export function TextField(props: TextFieldProps) {
         labelComponent={Label}
         renderLeft={renderLeft}
         renderRight={renderRight}
-        type={type}
       />
     );
   }
@@ -101,22 +91,27 @@ export function TextField(props: TextFieldProps) {
   return (
     <FormField
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <TextFieldInput
-              label={label}
-              placeholder={placeholder}
-              labelComponent={FormLabel}
-              renderLeft={renderLeft}
-              renderRight={renderRight}
-              type={type}
-              {...field}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        const { value, onChange, ...rest } = field;
+
+        return (
+          <FormItem>
+            <FormControl>
+              <TextFieldInput
+                label={label}
+                placeholder={placeholder}
+                labelComponent={FormLabel}
+                renderLeft={renderLeft}
+                renderRight={renderRight}
+                value={value || ""}
+                onChange={(e) => onChange(e.target.value)}
+                {...rest}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 }

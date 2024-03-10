@@ -8,6 +8,11 @@ import { DatePicker } from "@components/DatePicker";
 
 import { useProductMutate } from "@entities/product/useProduct";
 import { StatusProductEnum } from "@entities/enums/status-product.enum";
+import { SelectNumberField } from "@components/SelectNumberField";
+
+//TODO: size layout form have be fix, find out Grid component seemen with Material UI to fix this problem
+//TODO: Dialog will have differents sizes of width
+//TODO: add field select status <SelectField /> uncontrolled
 
 const schemaCommon = {
   name: z.string().min(1, { message: "Informe o Nome" }),
@@ -53,9 +58,9 @@ function FormFieldsCommon({ isUpdate }: FormFieldsCommonProps) {
 
 const schemaCreate = z.object({
   replicate: z
-    .string()
+    .number()
     .min(1, { message: "Informe pelo menos 1 para replicar" })
-    .max(2, { message: "Informe no máximo 99 para replicar" }),
+    .max(100, { message: "Informe no máximo 100 para replicar" }),
   supplierId: z.string().min(1, { message: "Informe o Fornecedor" }),
   categoryId: z.string().min(1, { message: "Informe a Categoria" }),
   ...schemaCommon,
@@ -71,23 +76,18 @@ export function FormCreate(props: FormCreateProps) {
   const { close } = props;
 
   const defaultValues: FormTypeCreate = {
-    replicate: "1",
+    replicate: 1,
     supplierId: "",
     categoryId: "",
     name: "",
-    color: "",
-    fabric: "",
-    measure: "",
-    nrClient: "",
-    fiscalNoteEntry: "",
-    fiscalNoteDeparture: "",
   };
 
   const { mutateAsyncCreate, isLoadingCreate: isLoading } = useProductMutate();
 
   async function onSubmit({ replicate, ...data }: FormTypeCreate) {
+    console.log({ data, replicate });
     await mutateAsyncCreate({
-      replicate: parseInt(replicate),
+      replicate,
       data,
     });
     close();
@@ -101,7 +101,7 @@ export function FormCreate(props: FormCreateProps) {
       schema={schemaCreate}
       defaultValues={defaultValues}
     >
-      <TextField label="Replicar Cadastro" name="replicate" type="number" />
+      <SelectNumberField label="Replicar Cadastro" name="replicate" />
       <FormFieldsCommon isUpdate={false} />
     </ActionForm>
   );
@@ -144,8 +144,6 @@ export function FormUpdate(props: FormUpdateProps) {
       defaultValues={defaultValues}
     >
       <FormFieldsCommon isUpdate={true} />
-
-      {/* <SelectField /> */}
     </ActionForm>
   );
 }
