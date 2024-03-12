@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -123,8 +122,10 @@ export function AutoComplete({
                         onChange("");
                       }}
                     />
-                    <CommandEmpty>Sem resultados</CommandEmpty>
                     <CommandGroup>
+                      {!(data.length > 0) && (
+                        <div className="my-4 text-center">Sem resultados</div>
+                      )}
                       {data.map((d) => (
                         <CommandItem
                           key={d.value}
