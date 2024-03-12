@@ -4,20 +4,18 @@ import {
   Dialog,
   DialogTrigger,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 
 interface TriggerDialogProps {
   title: string;
-  description?: string;
   children: (close: () => void) => JSX.Element;
   trigger: ReactNode;
 }
 
 export function TriggerDialog(props: TriggerDialogProps) {
-  const { title, description, children, trigger } = props;
+  const { title, children, trigger } = props;
 
   const [open, setOpen] = useState(false);
 
@@ -29,14 +27,13 @@ export function TriggerDialog(props: TriggerDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
-        className="gap-3"
+        className="flex max-h-screen flex-col gap-2 p-5"
         onPointerDownOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="space-y-1">
+        <DialogHeader>
           <DialogTitle className="text-xl">{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {children(close)}
+        <div className="overflow-y-auto p-1.5">{children(close)}</div>
       </DialogContent>
     </Dialog>
   );
