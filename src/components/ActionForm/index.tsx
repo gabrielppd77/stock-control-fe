@@ -33,9 +33,11 @@ export function ActionForm<
   });
 
   return (
-    <div className="space-y-4">
-      <Form {...form}>{children}</Form>
-      <div className="flex gap-4">
+    <div className="space-y-2">
+      <div className="space-y-3">
+        <Form {...form}>{children}</Form>
+      </div>
+      <div className="flex gap-2">
         <Button fullWidth variant="outline" onClick={() => onCancel()}>
           Cancelar
         </Button>

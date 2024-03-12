@@ -9,10 +9,7 @@ import { DatePicker } from "@components/DatePicker";
 import { useProductMutate } from "@entities/product/useProduct";
 import { StatusProductEnum } from "@entities/enums/status-product.enum";
 import { SelectNumberField } from "@components/SelectNumberField";
-
-//TODO: size layout form have be fix, find out Grid component seemen with Material UI to fix this problem
-//TODO: Dialog will have differents sizes of width
-//TODO: add field select status <SelectField /> uncontrolled
+import { Separator } from "@components/ui/separator";
 
 const schemaCommon = {
   name: z.string().min(1, { message: "Informe o Nome" }),
@@ -33,7 +30,6 @@ interface FormFieldsCommonProps {
 function FormFieldsCommon({ isUpdate }: FormFieldsCommonProps) {
   return (
     <>
-      <TextField label="Nome" name="name" />
       <AutoCompleteSupplier
         label="Fornecedor"
         name="supplierId"
@@ -44,14 +40,21 @@ function FormFieldsCommon({ isUpdate }: FormFieldsCommonProps) {
         name="categoryId"
         disabled={isUpdate}
       />
+      <Separator />
       <TextField label="Cor" name="color" />
       <TextField label="Tecido" name="fabric" />
       <TextField label="Medidas" name="measure" />
-      <DatePicker label="Data de Entrada" name="dtEntry" />
-      <DatePicker label="Data de Saída" name="dtDeparture" />
+      <Separator />
+      <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+        <DatePicker label="Data de Entrada" name="dtEntry" />
+        <DatePicker label="Data de Saída" name="dtDeparture" />
+      </div>
+      <Separator />
       <TextField label="Número do Cliente" name="nrClient" />
-      <TextField label="NF Entrada" name="fiscalNoteEntry" />
-      <TextField label="NF Saída" name="fiscalNoteDeparture" />
+      <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+        <TextField label="NF Entrada" name="fiscalNoteEntry" />
+        <TextField label="NF Saída" name="fiscalNoteDeparture" />
+      </div>
     </>
   );
 }
@@ -101,7 +104,14 @@ export function FormCreate(props: FormCreateProps) {
       schema={schemaCreate}
       defaultValues={defaultValues}
     >
-      <SelectNumberField label="Replicar Cadastro" name="replicate" />
+      <div className="flex gap-4">
+        <div className="w-40">
+          <SelectNumberField label="Replicar Cadastro" name="replicate" />
+        </div>
+        <div className="flex flex-1 flex-col justify-end">
+          <TextField label="Nome" name="name" />
+        </div>
+      </div>
       <FormFieldsCommon isUpdate={false} />
     </ActionForm>
   );
@@ -143,6 +153,7 @@ export function FormUpdate(props: FormUpdateProps) {
       schema={schemaUpdate}
       defaultValues={defaultValues}
     >
+      <TextField label="Nome" name="name" />
       <FormFieldsCommon isUpdate={true} />
     </ActionForm>
   );
