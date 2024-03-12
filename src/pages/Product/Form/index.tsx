@@ -16,31 +16,16 @@ const schemaCommon = {
   color: z.string().optional(),
   fabric: z.string().optional(),
   measure: z.string().optional(),
-  dtEntry: z.date().optional(),
-  dtDeparture: z.date().optional(),
+  dtEntry: z.string().optional(),
+  dtDeparture: z.string().optional(),
   nrClient: z.string().optional(),
   fiscalNoteEntry: z.string().optional(),
   fiscalNoteDeparture: z.string().optional(),
 };
 
-interface FormFieldsCommonProps {
-  isUpdate: boolean;
-}
-
-function FormFieldsCommon({ isUpdate }: FormFieldsCommonProps) {
+function FormFieldsCommon() {
   return (
     <>
-      <AutoCompleteSupplier
-        label="Fornecedor"
-        name="supplierId"
-        disabled={isUpdate}
-      />
-      <AutoCompleteCategory
-        label="Categoria"
-        name="categoryId"
-        disabled={isUpdate}
-      />
-      <Separator />
       <TextField label="Cor" name="color" />
       <TextField label="Tecido" name="fabric" />
       <TextField label="Medidas" name="measure" />
@@ -88,7 +73,6 @@ export function FormCreate(props: FormCreateProps) {
   const { mutateAsyncCreate, isLoadingCreate: isLoading } = useProductMutate();
 
   async function onSubmit({ replicate, ...data }: FormTypeCreate) {
-    console.log({ data, replicate });
     await mutateAsyncCreate({
       replicate,
       data,
@@ -112,7 +96,10 @@ export function FormCreate(props: FormCreateProps) {
           <TextField label="Nome" name="name" />
         </div>
       </div>
-      <FormFieldsCommon isUpdate={false} />
+      <AutoCompleteSupplier label="Fornecedor" name="supplierId" />
+      <AutoCompleteCategory label="Categoria" name="categoryId" />
+      <Separator />
+      <FormFieldsCommon />
     </ActionForm>
   );
 }
@@ -154,7 +141,10 @@ export function FormUpdate(props: FormUpdateProps) {
       defaultValues={defaultValues}
     >
       <TextField label="Nome" name="name" />
-      <FormFieldsCommon isUpdate={true} />
+      <AutoCompleteSupplier label="Fornecedor" name="supplierId" disabled />
+      <AutoCompleteCategory label="Categoria" name="categoryId" disabled />
+      <Separator />
+      <FormFieldsCommon />
     </ActionForm>
   );
 }

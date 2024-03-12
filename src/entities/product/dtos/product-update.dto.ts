@@ -5,8 +5,8 @@ export interface ProductUpdateDTO {
   color?: string;
   fabric?: string;
   measure?: string;
-  dtEntry?: Date;
-  dtDeparture?: Date;
+  dtEntry?: string;
+  dtDeparture?: string;
   nrClient?: string;
   fiscalNoteEntry?: string;
   fiscalNoteDeparture?: string;

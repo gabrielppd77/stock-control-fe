@@ -25,19 +25,11 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ name, label }: DatePickerProps) {
-  // const [date, setDate] = React.useState<Date>();
-
   return (
     <FormField
       name={name}
-      render={({ field, formState }) => {
+      render={({ field }) => {
         const { value, onChange } = field;
-        const { defaultValues } = formState;
-
-        if (defaultValues && defaultValues[name] && !value) {
-          onChange(new Date(defaultValues[name]));
-        }
-
         return (
           <FormItem>
             <FormControl>
@@ -73,8 +65,8 @@ export function DatePicker({ name, label }: DatePickerProps) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={value}
-                    onSelect={onChange}
+                    selected={new Date(value)}
+                    onSelect={(date) => onChange(date?.toISOString())}
                     initialFocus
                     locale={ptBR}
                   />
