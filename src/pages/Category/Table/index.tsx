@@ -53,6 +53,7 @@ export function Table() {
                   onClick={() =>
                     confirmDelete(() => mutateAsyncDelete(data.id))
                   }
+                  severity="error"
                 >
                   <Trash2 />
                 </IconButton>
