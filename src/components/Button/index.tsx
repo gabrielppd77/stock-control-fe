@@ -42,7 +42,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           },
         }}
         whileHover={{ scale: 1.05 }}
-        className={cn({ ["w-full"]: fullWidth })}
+        className={cn({ ["m-1.5 w-full"]: fullWidth })}
       >
         <ButtonUI
           className={cn({
