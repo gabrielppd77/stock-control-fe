@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import { Search, X } from "lucide-react";
 
-import { TextField } from "@components/TextField";
-import { Button } from "@components/Button";
+import { TextFieldControlled } from "@components/TextField";
 import { SelectFieldControlled } from "@components/SelectField";
 
 import { useTableSearchParams } from "../../../hooks/useTableSearchParams";
+import { IconButton } from "@components/IconButton";
 
 export interface SearchOption<TData> {
   label: string;
@@ -41,21 +41,15 @@ export function SearchControl<TData>(props: SearchControlProps<TData>) {
 
   return (
     <div className="flex gap-2">
-      <TextField
-        name="search-field"
+      <TextFieldControlled
         placeholder="Faça a sua pesquisa..."
         value={query || ""}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={setQuery}
         renderLeft={<Search />}
         renderRight={
-          <Button
-            size="sm"
-            variant="ghost"
-            className="rounded-full"
-            onClick={() => setQuery("")}
-          >
+          <IconButton onClick={() => setQuery("")}>
             <X className="h-4 w-4" />
-          </Button>
+          </IconButton>
         }
       />
       <SelectFieldControlled
