@@ -4,7 +4,7 @@ import { Search, X } from "lucide-react";
 
 import { TextField } from "@components/TextField";
 import { Button } from "@components/Button";
-import { SelectField } from "@components/SelectField";
+import { SelectFieldControlled } from "@components/SelectField";
 
 import { useTableSearchParams } from "../../../hooks/useTableSearchParams";
 
@@ -58,7 +58,7 @@ export function SearchControl<TData>(props: SearchControlProps<TData>) {
           </Button>
         }
       />
-      <SelectField
+      <SelectFieldControlled
         options={searchOptions}
         value={field || ""}
         onChange={(value) => setField(value)}

@@ -1,4 +1,4 @@
-import { SelectField } from "@components/SelectField";
+import { SelectFieldControlled } from "@components/SelectField";
 
 import { PaginationControl } from "./PaginationControl";
 
@@ -27,7 +27,7 @@ export function Pagination(props: PaginationProps) {
       </div>
 
       <div className="flex h-full w-20 items-center">
-        <SelectField
+        <SelectFieldControlled
           value={size.toString()}
           onChange={(value) => changeSize(parseInt(value))}
           options={[

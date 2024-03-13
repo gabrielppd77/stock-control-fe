@@ -7,9 +7,13 @@ import { AutoCompleteCategory } from "@components/AutoCompleteCategory";
 import { DatePicker } from "@components/DatePicker";
 
 import { useProductMutate } from "@entities/product/useProduct";
-import { StatusProductEnum } from "@entities/enums/status-product.enum";
+import {
+  StatusProductEnum,
+  StatusProductOptions,
+} from "@entities/enums/status-product.enum";
 import { SelectNumberField } from "@components/SelectNumberField";
 import { Separator } from "@components/ui/separator";
+import { SelectField } from "@components/SelectField";
 
 const schemaCommon = {
   name: z.string().min(1, { message: "Informe o Nome" }),
@@ -145,6 +149,12 @@ export function FormUpdate(props: FormUpdateProps) {
       <AutoCompleteCategory label="Categoria" name="categoryId" disabled />
       <Separator />
       <FormFieldsCommon />
+
+      <SelectField
+        label="Status"
+        name="status"
+        options={StatusProductOptions}
+      />
     </ActionForm>
   );
 }
