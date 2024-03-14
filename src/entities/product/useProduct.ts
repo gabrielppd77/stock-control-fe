@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { PaginationQuery } from "@entities/common/pagination.query";
-import { ProductPresenter } from "./dtos/product.presenter";
+import { ProductListQuery } from "./dtos/product-list.query";
 
 import { list } from "./requests/list";
 import { create } from "./requests/create";
@@ -14,7 +13,7 @@ import { notifyCreate, notifyUpdate, notifyRemove } from "@lib/notification";
 
 const query = ["products"];
 
-export function useProductQuery(props: PaginationQuery<ProductPresenter>) {
+export function useProductQuery(props: ProductListQuery) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: [...query, props],
     queryFn: () => list({ params: props }),
