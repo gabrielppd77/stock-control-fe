@@ -1,14 +1,16 @@
 import { useState } from "react";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Filter, Pencil, Trash2 } from "lucide-react";
 
 import { DataTable } from "@components/DataTable";
 import { TriggerDialog } from "@components/TriggerDialog";
 import { TextFieldSearch } from "@components/TextFieldSearch";
 import { SelectFieldControlled } from "@components/SelectField";
 import { IconButton } from "@components/IconButton";
+import { TriggerDrawer } from "@components/TriggerDrawer";
 
 import { FormUpdate } from "../Form";
+import { FormFilter } from "../FormFilter";
 
 import { useTableSearchParams } from "@hooks/useTableSearchParams";
 import {
@@ -56,6 +58,16 @@ export function Table() {
           value={field}
           onChange={setField}
         />
+        <TriggerDrawer
+          title="Filtros"
+          trigger={
+            <IconButton>
+              <Filter />
+            </IconButton>
+          }
+        >
+          {FormFilter}
+        </TriggerDrawer>
       </div>
       <div className="flex-1">
         <DataTable
@@ -112,7 +124,7 @@ export function Table() {
                         </IconButton>
                       }
                     >
-                      {(close) => <FormUpdate close={close} data={data} />}
+                      {({ close }) => <FormUpdate close={close} data={data} />}
                     </TriggerDialog>
 
                     <IconButton

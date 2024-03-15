@@ -72,7 +72,7 @@ export function Table() {
                         </IconButton>
                       }
                     >
-                      {(close) => <Form close={close} data={data} />}
+                      {({ close }) => <Form close={close} data={data} />}
                     </TriggerDialog>
 
                     <IconButton

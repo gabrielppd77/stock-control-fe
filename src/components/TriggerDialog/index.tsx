@@ -10,7 +10,7 @@ import {
 
 interface TriggerDialogProps {
   title: string;
-  children: (close: () => void) => JSX.Element;
+  children: ({ close }: { close: () => void }) => JSX.Element;
   trigger: ReactNode;
 }
 
@@ -33,7 +33,9 @@ export function TriggerDialog(props: TriggerDialogProps) {
         <DialogHeader>
           <DialogTitle className="text-xl">{title}</DialogTitle>
         </DialogHeader>
-        <div className="overflow-y-auto p-1.5">{children(close)}</div>
+        <div className="h-full overflow-y-auto p-1.5">
+          {children({ close })}
+        </div>
       </DialogContent>
     </Dialog>
   );

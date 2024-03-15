@@ -18,7 +18,7 @@ export function Supplier() {
             title="Cadastro de Fornecedor"
             trigger={<Button icon={PlusCircle}>Adicionar</Button>}
           >
-            {(close) => <Form close={close} data={null} />}
+            {({ close }) => <Form close={close} data={null} />}
           </TriggerDialog>
         }
       />

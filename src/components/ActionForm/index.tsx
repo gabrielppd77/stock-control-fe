@@ -33,7 +33,7 @@ export function ActionForm<
   });
 
   return (
-    <div className="space-y-2">
+    <div className="flex h-full flex-col justify-between gap-2">
       <div className="space-y-3">
         <Form {...form}>{children}</Form>
       </div>

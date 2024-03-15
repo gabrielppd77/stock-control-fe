@@ -18,7 +18,7 @@ export function Product() {
             title="Cadastro de Produto"
             trigger={<Button icon={PlusCircle}>Adicionar</Button>}
           >
-            {(close) => <FormCreate close={close} />}
+            {FormCreate}
           </TriggerDialog>
         }
       />

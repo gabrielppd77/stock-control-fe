@@ -18,7 +18,7 @@ export function Category() {
             title="Cadastro de Categoria"
             trigger={<Button icon={PlusCircle}>Adicionar</Button>}
           >
-            {(close) => <Form close={close} data={null} />}
+            {({ close }) => <Form close={close} data={null} />}
           </TriggerDialog>
         }
       />
