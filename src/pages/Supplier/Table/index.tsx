@@ -1,12 +1,9 @@
-import { useState } from "react";
-
 import { Pencil, Trash2 } from "lucide-react";
 
 import { DataTable } from "@components/DataTable";
 import { TriggerDialog } from "@components/TriggerDialog";
 import { IconButton } from "@components/IconButton";
 import { TextFieldSearch } from "@components/TextFieldSearch";
-import { SelectFieldControlled } from "@components/SelectField";
 
 import { Form } from "../Form";
 
@@ -18,16 +15,7 @@ import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
 import { confirmDelete } from "@lib/alert";
 
-const searchOptions = [
-  {
-    label: "Nome",
-    value: "name",
-  },
-];
-
 export function Table() {
-  const [field, setField] = useState<string>(searchOptions[0].value);
-
   const { pagination, changes } = useTableSearchParams();
   const { data, isLoading, isFetching } = useSupplierQuery(pagination);
   const { mutateAsyncDelete } = useSupplierMutate();
@@ -37,12 +25,7 @@ export function Table() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex gap-2">
-        <TextFieldSearch onChange={(search) => changeSearch(search, field)} />
-        <SelectFieldControlled
-          options={searchOptions}
-          value={field}
-          onChange={setField}
-        />
+        <TextFieldSearch onChange={(search) => changeSearch(search, "name")} />
       </div>
       <div className="flex-1">
         <DataTable
