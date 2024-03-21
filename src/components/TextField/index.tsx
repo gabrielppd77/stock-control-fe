@@ -44,6 +44,7 @@ export function TextField(props: TextFieldProps) {
 }
 
 interface TextFieldControlledProps {
+  name: string;
   label?: string;
   labelComponent?: React.ElementType;
   placeholder?: string;
@@ -58,6 +59,7 @@ export const TextFieldControlled = forwardRef<
   TextFieldControlledProps
 >((props, ref) => {
   const {
+    name,
     label,
     labelComponent: LabelComponent = Label,
     placeholder = " ",
@@ -74,13 +76,17 @@ export const TextFieldControlled = forwardRef<
       </div>
       <div className="relative">
         <Input
+          id={name}
           ref={ref}
           placeholder={placeholder}
           className={cn("peer", { ["pe-10 ps-10"]: renderLeft })}
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        <LabelComponent className="absolute start-2 top-3 z-10 origin-[0] -translate-y-5 scale-75 transform bg-white px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4">
+        <LabelComponent
+          htmlFor={name}
+          className="absolute start-2 top-3 z-10 origin-[0] -translate-y-5 scale-75 transform bg-white px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-1 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4"
+        >
           {label}
         </LabelComponent>
       </div>
