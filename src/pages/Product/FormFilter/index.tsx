@@ -4,8 +4,9 @@ import { AutoCompleteCategory } from "@components/AutoCompleteCategory";
 import { DatePicker } from "@components/DatePicker";
 import { Separator } from "@components/ui/separator";
 
-import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
+
+import { useTableProductSearchParams } from "@hooks/useTableProductSearchParams";
 
 const FormSchema = z.object({
   supplierId: z.string().optional(),
@@ -23,32 +24,24 @@ interface FormFilterProps {
 }
 
 export function FormFilter({ close }: FormFilterProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const defaultValues = {
-    supplierId: searchParams.get("supplierId") || "",
-    categoryId: searchParams.get("categoryId") || "",
-    dtEntryInitial: searchParams.get("dtEntryInitial") || "",
-    dtEntryEnd: searchParams.get("dtEntryEnd") || "",
-    dtDepartureInitial: searchParams.get("dtDepartureInitial") || "",
-    dtDepartureEnd: searchParams.get("dtDepartureEnd") || "",
-  };
+  const { pagination, changePagination } = useTableProductSearchParams();
 
   async function onSubmit(data: FormType) {
-    searchParams.set("supplierId", data?.supplierId || "");
-    searchParams.set("categoryId", data?.categoryId || "");
-    searchParams.set("dtEntryInitial", data?.dtEntryInitial || "");
-    searchParams.set("dtEntryEnd", data?.dtEntryEnd || "");
-    searchParams.set("dtDepartureInitial", data?.dtDepartureInitial || "");
-    searchParams.set("dtDepartureEnd", data?.dtDepartureEnd || "");
-    setSearchParams(searchParams);
+    changePagination({
+      supplierId: data?.supplierId || "",
+      categoryId: data?.categoryId || "",
+      dtEntryInitial: data?.dtEntryInitial || "",
+      dtEntryEnd: data?.dtEntryEnd || "",
+      dtDepartureInitial: data?.dtDepartureInitial || "",
+      dtDepartureEnd: data?.dtDepartureEnd || "",
+    });
     close();
   }
 
   return (
     <ActionForm
       schema={FormSchema}
-      defaultValues={defaultValues}
+      defaultValues={pagination}
       onSubmit={onSubmit}
       onCancel={close}
     >

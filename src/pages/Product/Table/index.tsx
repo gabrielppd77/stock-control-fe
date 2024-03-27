@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Filter, Pencil, Trash2 } from "lucide-react";
 
@@ -13,6 +13,7 @@ import { FormUpdate } from "../Form";
 import { FormFilter } from "../FormFilter";
 
 import { useTableSearchParams } from "@hooks/useTableSearchParams";
+import { useTableProductSearchParams } from "@hooks/useTableProductSearchParams";
 import {
   useProductQuery,
   useProductMutate,
@@ -43,16 +44,30 @@ export function Table() {
   const [field, setField] = useState<string>(searchOptions[0].value);
 
   const { pagination, changes } = useTableSearchParams();
-  const { data, isLoading, isFetching } = useProductQuery(pagination);
+  const { pagination: paginationProduct } = useTableProductSearchParams();
+
+  const { data, isLoading, isFetching } = useProductQuery({
+    ...pagination,
+    ...paginationProduct,
+  });
 
   const { mutateAsyncDelete } = useProductMutate();
 
   const { changeSearch } = changes;
+  
+  useEffect(() =>{
+    if(pagination.field) {
+      setField(pagination.field)
+    }
+  }, [pagination.field])
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex gap-2">
-        <TextFieldSearch onChange={(search) => changeSearch(search, field)} />
+        <TextFieldSearch
+          value={pagination.search || null}
+          onChange={(search) => changeSearch(search, field)}
+        />
         <SelectFieldControlled
           options={searchOptions}
           value={field}

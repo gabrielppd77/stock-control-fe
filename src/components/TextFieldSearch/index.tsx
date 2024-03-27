@@ -6,11 +6,16 @@ import { IconButton } from "@components/IconButton";
 import { Search, X } from "lucide-react";
 
 interface TextFieldSearchProps {
+  value: string | null;
   onChange: (value: string) => void;
 }
 
-export function TextFieldSearch({ onChange }: TextFieldSearchProps) {
+export function TextFieldSearch({ value, onChange }: TextFieldSearchProps) {
   const [query, setQuery] = useState<string | null>(null);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
 
   useEffect(() => {
     if (typeof query !== "string") return;
@@ -21,6 +26,7 @@ export function TextFieldSearch({ onChange }: TextFieldSearchProps) {
 
   return (
     <TextFieldControlled
+      name="search-field"
       placeholder="Faça a sua pesquisa..."
       value={query || ""}
       onChange={setQuery}
