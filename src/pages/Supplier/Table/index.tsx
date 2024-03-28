@@ -25,7 +25,10 @@ export function Table() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex gap-2">
-        <TextFieldSearch onChange={(search) => changeSearch(search, "name")} />
+        <TextFieldSearch
+          value={pagination.search || ""}
+          onChange={(search) => changeSearch(search, "name")}
+        />
       </div>
       <div className="flex-1">
         <DataTable

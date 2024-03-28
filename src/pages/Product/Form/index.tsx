@@ -17,9 +17,6 @@ import { SelectField } from "@components/SelectField";
 
 const schemaCommon = {
   name: z.string().min(1, { message: "Informe o Nome" }),
-  color: z.string().optional(),
-  fabric: z.string().optional(),
-  measure: z.string().optional(),
   dtEntry: z.string().optional(),
   dtDeparture: z.string().optional(),
   nrClient: z.string().optional(),
@@ -30,10 +27,6 @@ const schemaCommon = {
 function FormFieldsCommon() {
   return (
     <>
-      <TextField label="Cor" name="color" />
-      <TextField label="Tecido" name="fabric" />
-      <TextField label="Medidas" name="measure" />
-      <Separator />
       <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
         <DatePicker label="Data de Entrada" name="dtEntry" />
         <DatePicker label="Data de Saída" name="dtDeparture" />

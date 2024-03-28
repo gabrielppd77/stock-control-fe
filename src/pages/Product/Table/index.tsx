@@ -54,12 +54,12 @@ export function Table() {
   const { mutateAsyncDelete } = useProductMutate();
 
   const { changeSearch } = changes;
-  
-  useEffect(() =>{
-    if(pagination.field) {
-      setField(pagination.field)
+
+  useEffect(() => {
+    if (pagination.field) {
+      setField(pagination.field);
     }
-  }, [pagination.field])
+  }, [pagination.field]);
 
   return (
     <div className="flex h-full flex-col">
@@ -92,6 +92,14 @@ export function Table() {
           isFetching={isFetching}
           columns={[
             {
+              header: "Status",
+              accessorKey: "status",
+              cell: ({ row }) => {
+                const data = row.original;
+                return data.statusName;
+              },
+            },
+            {
               header: "Nome",
               accessorKey: "name",
             },
@@ -112,16 +120,8 @@ export function Table() {
               },
             },
             {
-              header: "Cor",
-              accessorKey: "color",
-            },
-            {
-              header: "Tecido",
-              accessorKey: "fabric",
-            },
-            {
-              header: "Medidas",
-              accessorKey: "measure",
+              header: "Cliente",
+              accessorKey: "nrClient",
             },
             {
               header: "Ações",
