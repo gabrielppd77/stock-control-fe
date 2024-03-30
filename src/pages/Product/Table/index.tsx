@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-
 import { Filter, Pencil, Trash2 } from "lucide-react";
 
 import { DataTable } from "@components/DataTable";
 import { TriggerDialog } from "@components/TriggerDialog";
 import { TextFieldSearch } from "@components/TextFieldSearch";
-import { SelectFieldControlled } from "@components/SelectField";
 import { IconButton } from "@components/IconButton";
 import { TriggerDrawer } from "@components/TriggerDrawer";
 
@@ -21,28 +18,7 @@ import {
 
 import { confirmDelete } from "@lib/alert";
 
-const searchOptions = [
-  {
-    label: "Nome",
-    value: "name",
-  },
-  {
-    label: "Cor",
-    value: "color",
-  },
-  {
-    label: "Tecido",
-    value: "fabric",
-  },
-  {
-    label: "Medidas",
-    value: "measure",
-  },
-];
-
 export function Table() {
-  const [field, setField] = useState<string>(searchOptions[0].value);
-
   const { pagination, changes } = useTableSearchParams();
   const { pagination: paginationProduct } = useTableProductSearchParams();
 
@@ -55,23 +31,12 @@ export function Table() {
 
   const { changeSearch } = changes;
 
-  useEffect(() => {
-    if (pagination.field) {
-      setField(pagination.field);
-    }
-  }, [pagination.field]);
-
   return (
     <div className="flex h-full flex-col">
       <div className="flex gap-2">
         <TextFieldSearch
           value={pagination.search || null}
-          onChange={(search) => changeSearch(search, field)}
-        />
-        <SelectFieldControlled
-          options={searchOptions}
-          value={field}
-          onChange={setField}
+          onChange={(search) => changeSearch(search, "name")}
         />
         <TriggerDrawer
           title="Filtros"
