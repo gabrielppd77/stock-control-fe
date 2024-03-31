@@ -3,16 +3,16 @@ import { cn } from "@lib/utils";
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowDown } from "lucide-react";
 
-import { Table, flexRender } from "@tanstack/react-table";
-
 import { useTableSearchParams } from "@hooks/useTableSearchParams";
 
+import { DataTableColumn } from "../@types/DataTableColumn";
+
 interface HeaderProps<TData> {
-  table: Table<TData>;
+  columns: DataTableColumn<TData>[];
 }
 
 export function Header<TData>(props: HeaderProps<TData>) {
-  const { table } = props;
+  const { columns } = props;
 
   const { changes, pagination } = useTableSearchParams();
 
@@ -21,51 +21,38 @@ export function Header<TData>(props: HeaderProps<TData>) {
 
   return (
     <TableHeader>
-      {table.getHeaderGroups().map((headerGroup) => (
-        <TableRow key={headerGroup.id}>
-          {headerGroup.headers.map((header) => {
-            const enableSorting =
-              typeof header.column.columnDef.enableSorting === "undefined"
-                ? true
-                : header.column.columnDef.enableSorting;
-            return (
-              <TableHead
-                onClick={() => {
-                  if (!enableSorting) return;
-                  changeSort(header.id, order === "desc" ? "asc" : "desc");
-                }}
-                key={header.id}
-                style={{
-                  width:
-                    header.getSize() !== 150 ? header.getSize() : undefined,
-                }}
-              >
-                <div
-                  className={cn({
-                    ["flex items-center justify-between hover:cursor-pointer"]:
-                      enableSorting,
-                  })}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                  {sort === header.id && (
-                    <ArrowDown
-                      className={cn(
-                        "h-5 w-5 transition-transform",
-                        order === "asc" ? "rotate-0" : "rotate-180",
-                      )}
-                    />
-                  )}
-                </div>
-              </TableHead>
-            );
-          })}
-        </TableRow>
-      ))}
+      <TableRow>
+        {columns.map((col) => {
+          const isSort =
+            typeof col.options?.sort === "boolean" ? col.options?.sort : true;
+          return (
+            <TableHead
+              key={col.name}
+              onClick={
+                isSort
+                  ? () =>
+                      changeSort(col.name, order === "desc" ? "asc" : "desc")
+                  : undefined
+              }
+              className={cn(col.options?.classNameHeader, {
+                ["hover:cursor-pointer"]: isSort,
+              })}
+            >
+              <div className="flex items-center justify-between gap-4">
+                {col.label}
+                {sort === col.name && (
+                  <ArrowDown
+                    className={cn(
+                      "h-5 w-5 transition-transform",
+                      order === "asc" ? "rotate-0" : "rotate-180",
+                    )}
+                  />
+                )}
+              </div>
+            </TableHead>
+          );
+        })}
+      </TableRow>
     </TableHeader>
   );
 }

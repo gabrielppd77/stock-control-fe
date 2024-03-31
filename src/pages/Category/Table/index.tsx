@@ -39,38 +39,40 @@ export function Table() {
           isFetching={isFetching}
           columns={[
             {
-              header: "Nome",
-              accessorKey: "name",
+              label: "Nome",
+              name: "name",
             },
             {
-              header: "Ações",
-              enableSorting: false,
-              size: 120,
-              cell: ({ row }) => {
-                const data = row.original;
-                return (
-                  <div className="flex items-center justify-center gap-2">
-                    <TriggerDialog
-                      title="Atualizar Categoria"
-                      trigger={
-                        <IconButton>
-                          <Pencil />
-                        </IconButton>
-                      }
-                    >
-                      {({ close }) => <Form close={close} data={data} />}
-                    </TriggerDialog>
+              label: "Ações",
+              name: "id",
+              options: {
+                sort: false,
+                classNameHeader: "w-[120px]",
+                customBodyRender: (row) => {
+                  return (
+                    <div className="flex items-center justify-center gap-2">
+                      <TriggerDialog
+                        title="Atualizar Categoria"
+                        trigger={
+                          <IconButton>
+                            <Pencil />
+                          </IconButton>
+                        }
+                      >
+                        {({ close }) => <Form close={close} data={row} />}
+                      </TriggerDialog>
 
-                    <IconButton
-                      onClick={() =>
-                        confirmDelete(() => mutateAsyncDelete(data.id))
-                      }
-                      severity="error"
-                    >
-                      <Trash2 />
-                    </IconButton>
-                  </div>
-                );
+                      <IconButton
+                        onClick={() =>
+                          confirmDelete(() => mutateAsyncDelete(row.id))
+                        }
+                        severity="error"
+                      >
+                        <Trash2 />
+                      </IconButton>
+                    </div>
+                  );
+                },
               },
             },
           ]}

@@ -33,46 +33,48 @@ export function Table() {
       <div className="flex-1">
         <DataTable
           data={data?.data}
-          pagination={data?.pagination}
-          isLoading={isLoading}
-          isFetching={isFetching}
           columns={[
             {
-              header: "Nome",
-              accessorKey: "name",
+              name: "name",
+              label: "Nome",
             },
             {
-              header: "Ações",
-              enableSorting: false,
-              size: 120,
-              cell: ({ row }) => {
-                const data = row.original;
-                return (
-                  <div className="flex items-center justify-center gap-2">
-                    <TriggerDialog
-                      title="Atualizar Fornecedor"
-                      trigger={
-                        <IconButton>
-                          <Pencil />
-                        </IconButton>
-                      }
-                    >
-                      {({ close }) => <Form close={close} data={data} />}
-                    </TriggerDialog>
+              name: "id",
+              label: "Ações",
+              options: {
+                sort: false,
+                classNameHeader: "w-[120px]",
+                customBodyRender: (row) => {
+                  return (
+                    <div className="flex items-center justify-center gap-2">
+                      <TriggerDialog
+                        title="Atualizar Fornecedor"
+                        trigger={
+                          <IconButton>
+                            <Pencil />
+                          </IconButton>
+                        }
+                      >
+                        {({ close }) => <Form close={close} data={row} />}
+                      </TriggerDialog>
 
-                    <IconButton
-                      onClick={() =>
-                        confirmDelete(() => mutateAsyncDelete(data.id))
-                      }
-                      severity="error"
-                    >
-                      <Trash2 />
-                    </IconButton>
-                  </div>
-                );
+                      <IconButton
+                        onClick={() =>
+                          confirmDelete(() => mutateAsyncDelete(row.id))
+                        }
+                        severity="error"
+                      >
+                        <Trash2 />
+                      </IconButton>
+                    </div>
+                  );
+                },
               },
             },
           ]}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          pagination={data?.pagination}
         />
       </div>
     </div>

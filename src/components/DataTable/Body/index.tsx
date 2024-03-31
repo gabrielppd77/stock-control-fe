@@ -1,20 +1,25 @@
-import { ColumnDef, Table, flexRender } from "@tanstack/react-table";
-
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 import { LoadingSpinner } from "@components/LoadingSpinner";
 
-interface BodyProps<TData, TValue> {
-  table: Table<TData>;
-  columns: ColumnDef<TData, TValue>[];
+import { DataTableColumn } from "../@types/DataTableColumn";
+
+interface BodyProps<TData> {
+  data?: TData[];
+  columns: DataTableColumn<TData>[];
   isLoading: boolean;
 }
 
-export function Body<TData, TValue>(props: BodyProps<TData, TValue>) {
-  const { table, columns, isLoading } = props;
-  return (
-    <TableBody>
-      {isLoading ? (
+export function Body<TData>({
+  data: _data,
+  columns,
+  isLoading,
+}: BodyProps<TData>) {
+  const data = _data || [];
+
+  if (isLoading) {
+    return (
+      <TableBody>
         <TableRow>
           <TableCell colSpan={columns.length}>
             <div className="flex w-full justify-center">
@@ -22,23 +27,41 @@ export function Body<TData, TValue>(props: BodyProps<TData, TValue>) {
             </div>
           </TableCell>
         </TableRow>
-      ) : table.getRowModel().rows?.length ? (
-        table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))
-      ) : (
+      </TableBody>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <TableBody>
         <TableRow>
           <TableCell colSpan={columns.length} className="h-24 text-center">
             Sem resultados
           </TableCell>
         </TableRow>
-      )}
+      </TableBody>
+    );
+  }
+
+  return (
+    <TableBody>
+      {data.map((row, index) => (
+        <TableRow key={index}>
+          {columns.map((col) => {
+            const customBodyRender = col.options?.customBodyRender;
+
+            return (
+              <TableCell key={col.name}>
+                {customBodyRender ? (
+                  customBodyRender(row)
+                ) : (
+                  <>{row[col.name]}</>
+                )}
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      ))}
     </TableBody>
   );
 }

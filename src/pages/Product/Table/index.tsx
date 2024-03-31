@@ -51,72 +51,77 @@ export function Table() {
       </div>
       <div className="flex-1">
         <DataTable
-          data={data?.data}
+          data={data?.data || []}
           pagination={data?.pagination}
           isLoading={isLoading}
           isFetching={isFetching}
           columns={[
             {
-              header: "Status",
-              accessorKey: "status",
-              cell: ({ row }) => {
-                const data = row.original;
-                return data.statusName;
+              label: "Status",
+              name: "status",
+              options: {
+                customBodyRender: (row) => {
+                  return row.statusName;
+                },
               },
             },
             {
-              header: "Nome",
-              accessorKey: "name",
+              label: "Nome",
+              name: "name",
             },
             {
-              header: "Fornecedor",
-              accessorKey: "supplierId",
-              cell: ({ row }) => {
-                const data = row.original;
-                return data.supplierName;
+              label: "Fornecedor",
+              name: "supplierId",
+              options: {
+                customBodyRender: (row) => {
+                  return row.supplierName;
+                },
               },
             },
             {
-              header: "Categoria",
-              accessorKey: "categoryId",
-              cell: ({ row }) => {
-                const data = row.original;
-                return data.categoryName;
+              label: "Categoria",
+              name: "categoryId",
+              options: {
+                customBodyRender: (row) => {
+                  return row.categoryName;
+                },
               },
             },
             {
-              header: "Cliente",
-              accessorKey: "nrClient",
+              label: "Cliente",
+              name: "nrClient",
             },
             {
-              header: "Ações",
-              enableSorting: false,
-              size: 120,
-              cell: ({ row }) => {
-                const data = row.original;
-                return (
-                  <div className="flex items-center justify-center gap-2">
-                    <TriggerDialog
-                      title="Atualizar Produto"
-                      trigger={
-                        <IconButton>
-                          <Pencil />
-                        </IconButton>
-                      }
-                    >
-                      {({ close }) => <FormUpdate close={close} data={data} />}
-                    </TriggerDialog>
+              label: "Ações",
+              name: "id",
+              options: {
+                sort: false,
+                classNameHeader: "w-[120px]",
+                customBodyRender: (row) => {
+                  return (
+                    <div className="flex items-center justify-center gap-2">
+                      <TriggerDialog
+                        title="Atualizar Produto"
+                        trigger={
+                          <IconButton>
+                            <Pencil />
+                          </IconButton>
+                        }
+                      >
+                        {({ close }) => <FormUpdate close={close} data={row} />}
+                      </TriggerDialog>
 
-                    <IconButton
-                      onClick={() =>
-                        confirmDelete(() => mutateAsyncDelete(data.id))
-                      }
-                      severity="error"
-                    >
-                      <Trash2 />
-                    </IconButton>
-                  </div>
-                );
+                      <IconButton
+                        onClick={() =>
+                          confirmDelete(() => mutateAsyncDelete(row.id))
+                        }
+                        severity="error"
+                      >
+                        <Trash2 />
+                      </IconButton>
+                    </div>
+                  );
+                },
               },
             },
           ]}
