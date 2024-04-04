@@ -55,6 +55,9 @@ export function Table() {
           pagination={data?.pagination}
           isLoading={isLoading}
           isFetching={isFetching}
+          options={{
+            onExpandRow: (d) => <>{JSON.stringify(d)}</>,
+          }}
           columns={[
             {
               label: "Status",
