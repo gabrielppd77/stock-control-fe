@@ -23,7 +23,7 @@ export const IconButton = forwardRef<HTMLDivElement, IconButtonProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-full p-2 duration-200 hover:scale-110 hover:cursor-pointer",
+          "rounded-full duration-200 hover:scale-110 hover:cursor-pointer",
           hoverStyle[severity],
         )}
         onClick={onClick}

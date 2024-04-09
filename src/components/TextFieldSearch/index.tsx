@@ -33,7 +33,7 @@ export function TextFieldSearch({ value, onChange }: TextFieldSearchProps) {
       renderLeft={<Search />}
       renderRight={
         <IconButton onClick={() => setQuery("")}>
-          <X className="h-4 w-4" />
+          <X className="size-4" />
         </IconButton>
       }
     />

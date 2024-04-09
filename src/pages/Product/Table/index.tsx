@@ -42,7 +42,7 @@ export function Table() {
           title="Filtros"
           trigger={
             <IconButton>
-              <Filter />
+              <Filter className="size-6" />
             </IconButton>
           }
         >
@@ -99,7 +99,7 @@ export function Table() {
               name: "id",
               options: {
                 sort: false,
-                classNameHeader: "w-[120px]",
+                classNameHeader: "w-[100px]",
                 customBodyRender: (row) => {
                   return (
                     <div className="flex items-center justify-center gap-2">
@@ -107,7 +107,7 @@ export function Table() {
                         title="Atualizar Produto"
                         trigger={
                           <IconButton>
-                            <Pencil />
+                            <Pencil className="size-5" />
                           </IconButton>
                         }
                       >
@@ -120,7 +120,7 @@ export function Table() {
                         }
                         severity="error"
                       >
-                        <Trash2 />
+                        <Trash2 className="size-5" />
                       </IconButton>
                     </div>
                   );

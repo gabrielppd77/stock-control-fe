@@ -54,7 +54,7 @@ export function Header<TData>({
               <IconButton onClick={() => onChangeAllExpanded()}>
                 <ChevronDown
                   className={cn(
-                    "h-4 w-4 transition-transform",
+                    "size-4 transition-transform",
                     isExpanded ? "rotate-180" : "rotate-0",
                   )}
                 />

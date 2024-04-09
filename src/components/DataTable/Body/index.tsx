@@ -89,10 +89,10 @@ export function Body<TData>({
                   <TableCell>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-center">
-                        <IconButton className="h-5 w-5">
+                        <IconButton>
                           <ChevronDown
                             className={cn(
-                              "h-full w-full transition-transform",
+                              "size-4 transition-transform",
                               isExpanded ? "rotate-180" : "rotate-0",
                             )}
                           />
